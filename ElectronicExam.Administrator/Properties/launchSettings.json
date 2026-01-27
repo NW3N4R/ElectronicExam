@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ElectronicExam.Administrator (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ElectronicExam.Administrator (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

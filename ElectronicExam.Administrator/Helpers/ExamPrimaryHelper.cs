@@ -1,0 +1,87 @@
+﻿using ElectronicExam.Administrator.Models;
+
+using Microsoft.Data.SqlClient;
+using Microsoft.Toolkit.Uwp.Notifications;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace ElectronicExam.Administrator.Helpers
+{
+    public static class ExamPrimaryHelper
+    {
+        public static readonly List<ExamsPrimary> exams = new List<ExamsPrimary>();
+
+        public static async Task GetExamsPrimary()
+        {
+            using var cmd = new SqlCommand("SELECT * FROM ExamsPrimary", ConnectionHelper.connection);
+            using var reader = await cmd.ExecuteReaderAsync();
+            if (reader.HasRows)
+            {
+                exams.Clear();
+                while (await reader.ReadAsync())
+                {
+                    exams.Add(new ExamsPrimary
+                    {
+                        id = reader.GetInt32(0),
+                        TeacherName = reader.GetString(1),
+                        SubjectName = reader.GetString(2),
+                        Title = reader.GetString(3),
+                        EDate = new DateTimeOffset(reader.GetDateTime(4)),
+                        ETime = reader.GetTimeSpan(5)
+                    });
+                }
+            }
+        }
+
+        public static async Task InsertExamPrimary(ExamsPrimary exam)
+        {
+            if (exam == null) throw new ArgumentNullException(nameof(exam));
+
+            const string sql = @" INSERT INTO ExamsPrimary (TeacherName, SubjectName, Title,EDate,ETime)
+                                    VALUES (@teacher, @subject, @title,@EDate,@ETime)";
+
+            using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
+            cmd.Parameters.AddWithValue("@teacher", exam.TeacherName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@subject", exam.SubjectName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@title", exam.Title ?? string.Empty);
+            cmd.Parameters.AddWithValue("@EDate", exam.EDate);
+            cmd.Parameters.AddWithValue("@ETime", exam.ETime);
+
+            await cmd.ExecuteNonQueryAsync();
+            await GetExamsPrimary();
+            new ToastContentBuilder().AddText("Success").AddText("Exam Created").Show();
+
+        }
+
+        public static async Task UpdateExamPrimary(ExamsPrimary exam)
+        {
+            if (exam == null) throw new ArgumentNullException(nameof(exam));
+
+            const string sql = @" UPDATE ExamsPrimary SET 
+                                    TeacherName = @teacher, SubjectName = @subject,
+                                    Title = @title,EDate = @EDate,ETime = @ETime WHERE id = @id";
+
+            using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
+            cmd.Parameters.AddWithValue("@teacher", exam.TeacherName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@subject", exam.SubjectName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@title", exam.Title ?? string.Empty);
+            cmd.Parameters.AddWithValue("@EDate", exam.EDate);
+            cmd.Parameters.AddWithValue("@ETime", exam.ETime);
+            cmd.Parameters.AddWithValue("@id", exam.id);
+
+            await cmd.ExecuteNonQueryAsync();
+            await GetExamsPrimary();
+        }
+
+        public static async Task DeleteExamPrimary(int id)
+        {
+            using var cmd = new SqlCommand("DELETE FROM ExamsPrimary WHERE id = @id", ConnectionHelper.connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            await cmd.ExecuteNonQueryAsync();
+            await GetExamsPrimary();
+        }
+    }
+}
