@@ -25,16 +25,13 @@
             <NavigationViewItem Icon="People"
                                 Content="Students"
                                 Tag="StudentsView" />
-            <NavigationViewItem Icon="Contact"
-                                Content="Teachers"
-                                Tag="TeachersView" />
             <NavigationViewItem Icon="ShowResults"
                                 Content="Exams"
                                 Tag="ExamsView" />
             <NavigationViewItemSeparator />
             <NavigationViewItem Icon="Edit"
-                                Content="New Exam"
-                                Tag="NewExam" />
+                                Content="Set Exam Questions"
+                                Tag="NewExamQuestion" />
         </NavigationView.MenuItems>
         <Frame x:Name="ContentFrame" Padding="10" />
     </NavigationView>

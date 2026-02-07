@@ -15,8 +15,10 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
+		<None Remove="Updaters\UpdateExam.xaml" />
 		<None Remove="Updaters\UpdateStudent.xaml" />
 		<None Remove="Uploaders\NewExam.xaml" />
+		<None Remove="Uploaders\NewExamQuestion.xaml" />
 		<None Remove="Uploaders\NewStudent.xaml" />
 		<None Remove="Views\ExamsView.xaml" />
 		<None Remove="Views\HomeView.xaml" />
@@ -53,6 +55,16 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260101001" />
 		<PackageReference Include="System.Drawing.Common" Version="10.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Uploaders\NewExamQuestion.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Updaters\UpdateExam.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Updaters\UpdateStudent.xaml">
@@ -105,5 +117,13 @@
 		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
 		<PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
 		<PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<PackageCertificateThumbprint>1AC9BB1992980BF55339FC960C158C5D484AA2C9</PackageCertificateThumbprint>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppxBundle>Never</AppxBundle>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 	</PropertyGroup>
 </Project>

@@ -73,6 +73,8 @@ namespace ElectronicExam.Administrator.Helpers
 
             await cmd.ExecuteNonQueryAsync();
             await GetExamsPrimary();
+            new ToastContentBuilder().AddText("Success").AddText("Exam Updated").Show();
+
         }
 
         public static async Task DeleteExamPrimary(int id)

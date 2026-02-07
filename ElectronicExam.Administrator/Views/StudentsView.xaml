@@ -89,6 +89,8 @@
                                     <StackPanel Spacing="10">
                                         <Button Tag="{Binding id}"
                                                 x:Name="UpdateStudent"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
                                                 Click="UpdateStudent_Click"
                                                 HorizontalContentAlignment="Left"
                                                 HorizontalAlignment="Stretch">
@@ -101,6 +103,8 @@
                                         <Button Tag="{Binding id}"
                                                 x:Name="DeleteStudent"
                                                 Click="DeleteStudent_Click"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
                                                 HorizontalAlignment="Stretch"
                                                 HorizontalContentAlignment="Left">
                                             <StackPanel Orientation="Horizontal"

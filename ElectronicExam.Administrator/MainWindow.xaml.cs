@@ -18,6 +18,9 @@ namespace ElectronicExam.Administrator
         {
             InitializeComponent();
             ExtendsContentIntoTitleBar = true;
+
+            var first = pages["HomeView"].GetType();
+
         }
 
         private void GlobalNavigator_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -27,15 +30,16 @@ namespace ElectronicExam.Administrator
                 throw new InvalidOperationException("No valid selection.");
 
             ContentFrame.Navigate(pages[selectedTag].GetType(), null, new DrillInNavigationTransitionInfo());
+
         }
 
-        private Dictionary<string, Page> pages = new Dictionary<string, Page>()
+        Dictionary<string, Page> pages = new Dictionary<string, Page>()
         {
             { "HomeView", new HomeView() },
             { "ExamsView", new ExamsView() },
             { "StudentsView", new StudentsView() },
             { "TeachersView", new TeachersView() },
-            { "NewExam", new NewExam() },
+            { "NewExamQuestion", new NewExamQuestion() },
         };
 
         private void GlobalNavigator_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)

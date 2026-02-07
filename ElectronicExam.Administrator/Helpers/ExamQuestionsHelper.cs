@@ -43,7 +43,7 @@ namespace ElectronicExam.Administrator.Helpers
             if (q == null) throw new ArgumentNullException(nameof(q));
 
             const string sql = @"INSERT INTO ExamQuestions 
-                                 (Question, Explaining, CorrectAnsweer, AnsA, AnsB, AnsC, AnsD, Mark, ExamId)
+                                 (Question, Explaining, CorrectAnsweer, Answeer_A, Answeer_B, Answeer_C, Answeer_D, Mark, ExamId)
                                  VALUES (@question, @explaining, @correct, @a, @b, @c, @d, @mark, @examId)";
 
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);

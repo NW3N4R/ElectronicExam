@@ -1,6 +1,8 @@
-﻿namespace ElectronicExam.Administrator.Models
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace ElectronicExam.Administrator.Models
 {
-    public class ExamQuestions
+    public class ExamQuestions : ObservableObject
     {
         public int id { get; set; }
 

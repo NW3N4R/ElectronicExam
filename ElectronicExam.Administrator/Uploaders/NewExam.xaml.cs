@@ -19,7 +19,7 @@ namespace ElectronicExam.Administrator.Uploaders
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             await ExamPrimaryHelper.InsertExamPrimary(exPrimary);
-            ExamsView.Current.mylist.ItemsSource = ExamPrimaryHelper.exams;
+            ExamsView.Current.Reload();
         }
     }
 }

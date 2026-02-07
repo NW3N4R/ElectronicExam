@@ -7,7 +7,7 @@ namespace ElectronicExam.Administrator.Helpers
 {
     public static class ConnectionHelper
     {
-        private static readonly string connectionString = "Data Source=Nwenar;Initial Catalog=e-Exam;Integrated Security=True;TrustServerCertificate=True";
+        private static readonly string connectionString = "Data Source=Nwenar;Initial Catalog=e-Exam;Integrated Security=True;TrustServerCertificate=True;MultipleActiveResultSets=True";
         public static SqlConnection connection = new SqlConnection(connectionString);
         public static async Task OpenConnectionAsync()
         {
