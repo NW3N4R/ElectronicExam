@@ -36,7 +36,6 @@
         <ListView x:Name="myListView"
                   x:FieldModifier="Public"
                   Grid.Row="1">
-
             <ListView.Header>
                 <Grid Padding="15,0,15,0"
                       ColumnSpacing="40">
@@ -58,24 +57,23 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="60" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Full Name"
+                    <TextBlock Text="Code"
                                HorizontalAlignment="Center" />
-                    <TextBlock Grid.Column="1"
-                               Text="Phone" />
+                    <TextBlock Text="Full Name"
+                               HorizontalAlignment="Center"
+                               Grid.Column="1" />
                     <TextBlock Grid.Column="2"
-                               Text="Email"
-                          />
+                               Text="Phone" />
                     <TextBlock Grid.Column="3"
+                               Text="Email" />
+                    <TextBlock Grid.Column="4"
                                Text="Gender"
                                HorizontalAlignment="Center" />
-                    <TextBlock Grid.Column="4"
+                    <TextBlock Grid.Column="5"
                                Text="Stage"
                                HorizontalAlignment="Center" />
-                    <TextBlock Grid.Column="5"
-                               Text="Group"
-                               HorizontalAlignment="Center" />
                     <TextBlock Grid.Column="6"
-                               Text="Code"
+                               Text="Group"
                                HorizontalAlignment="Center" />
                     <TextBlock Grid.Column="7"
                                Text="Actions" />
@@ -95,30 +93,32 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="60" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding fullName}"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding Code}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
                         <TextBlock Grid.Column="1"
-                                   Text="{Binding Phone}"
+                                   Text="{Binding fullName}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="2"
-                                   Text="{Binding Email}"
+                                   Text="{Binding Phone}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="3"
-                                   Text="{Binding Gender}"
+                                   Text="{Binding Email}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="4"
-                                   Text="{Binding Stage}"
+                                   Text="{Binding Gender}"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="5"
-                                   Text="{Binding Group}"
+                                   Text="{Binding Stage}"
+                                   VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="6"
-                                   Text="{Binding Code}"
+                                   Text="{Binding Group}"
                                    HorizontalAlignment="Center" />
                         <Button Grid.Column="7"
                                 Background="Transparent"

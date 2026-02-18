@@ -50,6 +50,7 @@ public sealed partial class NewExamQuestion : Page
         listWrapper.Questions.Add(newQuestion);
         listWrapper.Questions.Last().QNo = listWrapper.Questions.Count;
     }
+
     private void Expander_Expanding(Expander sender, ExpanderExpandingEventArgs args)
     {
 
@@ -77,7 +78,7 @@ public sealed partial class NewExamQuestion : Page
 
     private async void SaveQuestions_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        foreach (var q in listWrapper.Questions)
+        foreach (var q in listWrapper.Questions.ToList())
         {
             var model = new ExamQuestions()
             {
@@ -91,9 +92,16 @@ public sealed partial class NewExamQuestion : Page
                 CorrectAnsweer = q.CorrectAnsweer,
                 ExamId = int.Parse(SelectExamHeader.SelectedValue.ToString()!),
             };
-            await ExamQuestionsHelper.InsertExamQuestion(model);
+            bool isInserted = await ExamQuestionsHelper.InsertExamQuestion(model);
+
+            if (isInserted)
+                listWrapper.Questions.Remove(q);
+
         }
-        new ToastContentBuilder().AddText("Success").AddText("Exam Questions Inserted").Show();
+        if (listWrapper.Questions.Count == 0)
+            new ToastContentBuilder().AddText("Success").AddText("Exam Questions Inserted").Show();
+        else
+            new ToastContentBuilder().AddText("Failure").AddText("One of The Question Failed To Be Inserted").Show();
     }
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

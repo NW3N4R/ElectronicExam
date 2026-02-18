@@ -10,7 +10,7 @@ namespace ElectronicExam.Administrator.Models
 
         public string Explaining { get; set; } = "";
 
-        public string CorrectAnsweer { get; set; } = "";
+        public string CorrectAnsweer { get; set; } = "A";
 
         public string AnsA { get; set; } = "";
 

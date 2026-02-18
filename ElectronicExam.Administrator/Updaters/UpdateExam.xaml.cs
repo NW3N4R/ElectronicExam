@@ -19,7 +19,10 @@ public sealed partial class UpdateExam : Page
     }
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        await ExamPrimaryHelper.UpdateExamPrimary(exPrimary);
-        ExamsView.Current.Reload();
+        bool isUpdated = await ExamPrimaryHelper.UpdateExamPrimary(exPrimary);
+        if (isUpdated)
+        {
+            ExamsView.Current.Reload();
+        }
     }
 }

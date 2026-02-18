@@ -2,11 +2,10 @@ using ElectronicExam.Administrator.Helpers;
 using ElectronicExam.Administrator.Updaters;
 
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 
 using System;
 using System.Linq;
-
-
 namespace ElectronicExam.Administrator.Views
 {
     public sealed partial class ExamsView : Page
@@ -80,7 +79,7 @@ namespace ElectronicExam.Administrator.Views
 
             };
             dialog.PrimaryButtonClick +=
-                async (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+                async (s, e) =>
                 {
                     await ExamPrimaryHelper.DeleteExamPrimary(tag);
                     Reload();
@@ -101,6 +100,16 @@ namespace ElectronicExam.Administrator.Views
             fl.Placement = Microsoft.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Left;
             fl.Content = ue;
             fl.ShowAt(button);
+        }
+
+        private void ViewQuestions_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            var bttn = sender as Button;
+            if (bttn?.Tag is not int Id)
+                return;
+
+            var model = ExamPrimaryHelper.exams.First(x => x.id == Id);
+            MainWindow.instance.ContentFrame.Navigate(typeof(ExamQuestionsView), model, new SuppressNavigationTransitionInfo());
         }
     }
 }

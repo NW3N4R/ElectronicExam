@@ -1,9 +1,12 @@
 ﻿using ElectronicExam.Administrator.Models;
 
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.UI.Xaml.Controls;
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace ElectronicExam.Administrator.Helpers
@@ -37,10 +40,38 @@ namespace ElectronicExam.Administrator.Helpers
                 }
             }
         }
-
-        public static async Task InsertExamQuestion(ExamQuestions q)
+        public static async Task<ObservableCollection<ExamQuestions>> GetExamQuestions(int examId)
         {
-            if (q == null) throw new ArgumentNullException(nameof(q));
+            ObservableCollection<ExamQuestions> Tempquestions = new();
+            using var cmd = new SqlCommand("SELECT * FROM ExamQuestions where examId = @id", ConnectionHelper.connection);
+            cmd.Parameters.AddWithValue("@id", examId);
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (reader.HasRows)
+            {
+                while (await reader.ReadAsync())
+                {
+                    Tempquestions.Add(new ExamQuestions
+                    {
+                        id = reader.GetInt32(0),
+                        Question = reader.GetString(1),
+                        Explaining = reader.GetString(2),
+                        CorrectAnsweer = reader.GetString(3),
+                        AnsA = reader.GetString(4),
+                        AnsB = reader.GetString(5),
+                        AnsC = reader.GetString(6),
+                        AnsD = reader.GetString(7),
+                        Mark = reader.GetByte(8),
+                        ExamId = reader.GetInt32(9)
+                    });
+                }
+            }
+            return Tempquestions;
+        }
+
+        public static async Task<bool> InsertExamQuestion(ExamQuestions q)
+        {
+            if (!ValidatedQuestion(q)) return false;
 
             const string sql = @"INSERT INTO ExamQuestions 
                                  (Question, Explaining, CorrectAnsweer, Answeer_A, Answeer_B, Answeer_C, Answeer_D, Mark, ExamId)
@@ -59,18 +90,19 @@ namespace ElectronicExam.Administrator.Helpers
 
             await cmd.ExecuteNonQueryAsync();
             await GetExamQuestions();
+            return true;
         }
 
-        public static async Task UpdateExamQuestion(ExamQuestions q)
+        public static async Task<bool> UpdateExamQuestion(ExamQuestions q)
         {
-            if (q == null) throw new ArgumentNullException(nameof(q));
+            if (!ValidatedQuestion(q)) return false;
 
             const string sql = @"UPDATE ExamQuestions SET Question = @question,
                                  Explaining = @explaining, CorrectAnsweer = @correct,
-                                 AnsA = @a,
-                                 AnsB = @b,
-                                 AnsC = @c,
-                                 AnsD = @d,
+                                 Answeer_A = @a,
+                                 Answeer_B = @b,
+                                 Answeer_C = @c,
+                                 Answeer_D = @d,
                                  Mark = @mark,
                                  ExamId = @examId WHERE id = @id";
 
@@ -88,6 +120,7 @@ namespace ElectronicExam.Administrator.Helpers
 
             await cmd.ExecuteNonQueryAsync();
             await GetExamQuestions();
+            return true;
         }
 
         public static async Task DeleteExamQuestion(int id)
@@ -98,6 +131,34 @@ namespace ElectronicExam.Administrator.Helpers
             cmd.Parameters.AddWithValue("@id", id);
             await cmd.ExecuteNonQueryAsync();
             await GetExamQuestions();
+        }
+
+        public static bool ValidatedQuestion(ExamQuestions question)
+        {
+            var instance = MainWindow.instance;
+            string? error = null;
+            if (question.Question.IsNullOrEmpty())
+                error = "Question most not be empty";
+
+            else if (question.Explaining.IsNullOrEmpty())
+                error = "Explaining most not be empty";
+
+            else if (question.AnsA.IsNullOrEmpty())
+                error = "Answeer A most not be empty";
+            else if (question.AnsB.IsNullOrEmpty())
+                error = "Answeer B most not be empty";
+            else if (question.AnsC.IsNullOrEmpty())
+                error = "Answeer C most not be empty";
+            else if (question.AnsD.IsNullOrEmpty())
+                error = "Answeer D most not be empty";
+            else if (question.Mark == 0)
+                error = "Question mark is required";
+            if (error != null)
+            {
+                instance.ShowInfo("Validation Error", error, InfoBarSeverity.Error);
+                return false;
+            }
+            return true;
         }
     }
 }

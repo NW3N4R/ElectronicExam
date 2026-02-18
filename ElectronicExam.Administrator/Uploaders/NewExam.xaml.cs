@@ -18,8 +18,11 @@ namespace ElectronicExam.Administrator.Uploaders
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            await ExamPrimaryHelper.InsertExamPrimary(exPrimary);
-            ExamsView.Current.Reload();
+            bool isInserted = await ExamPrimaryHelper.InsertExamPrimary(exPrimary);
+            if (isInserted)
+            {
+                ExamsView.Current.Reload();
+            }
         }
     }
 }

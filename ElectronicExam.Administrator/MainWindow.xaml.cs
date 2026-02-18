@@ -8,19 +8,20 @@ using Microsoft.UI.Xaml.Media.Animation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace ElectronicExam.Administrator
 {
     public sealed partial class MainWindow : Window
     {
+        public static MainWindow instance = new();
         public MainWindow()
         {
             InitializeComponent();
             ExtendsContentIntoTitleBar = true;
-
             var first = pages["HomeView"].GetType();
-
+            instance = this;
         }
 
         private void GlobalNavigator_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -41,7 +42,6 @@ namespace ElectronicExam.Administrator
             { "TeachersView", new TeachersView() },
             { "NewExamQuestion", new NewExamQuestion() },
         };
-
         private void GlobalNavigator_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
             if (ContentFrame.CanGoBack)
@@ -55,6 +55,20 @@ namespace ElectronicExam.Administrator
                 var item = GlobalNavigator.MenuItems.OfType<NavigationViewItem>().First(i => (string)i.Tag == key);
                 GlobalNavigator.SelectedItem = item;
             }
+        }
+
+        public void ShowInfo(string title, string message, InfoBarSeverity severity = InfoBarSeverity.Informational)
+        {
+            GlobalNotifier.Title = title;
+            GlobalNotifier.Message = message;
+            GlobalNotifier.Severity = severity;
+            GlobalNotifier.IsOpen = true;
+            CloseInfo();
+        }
+        private async void CloseInfo()
+        {
+            await Task.Delay(3000);
+            GlobalNotifier.IsOpen = false;
         }
     }
 }

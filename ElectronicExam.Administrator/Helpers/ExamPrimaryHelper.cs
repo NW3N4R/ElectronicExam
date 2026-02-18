@@ -1,10 +1,13 @@
 ﻿using ElectronicExam.Administrator.Models;
 
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Microsoft.UI.Xaml.Controls;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ElectronicExam.Administrator.Helpers
@@ -35,9 +38,10 @@ namespace ElectronicExam.Administrator.Helpers
             }
         }
 
-        public static async Task InsertExamPrimary(ExamsPrimary exam)
+        public static async Task<bool> InsertExamPrimary(ExamsPrimary exam)
         {
-            if (exam == null) throw new ArgumentNullException(nameof(exam));
+
+            if (!ValidateExam(exam)) return false;
 
             const string sql = @" INSERT INTO ExamsPrimary (TeacherName, SubjectName, Title,EDate,ETime)
                                     VALUES (@teacher, @subject, @title,@EDate,@ETime)";
@@ -52,12 +56,12 @@ namespace ElectronicExam.Administrator.Helpers
             await cmd.ExecuteNonQueryAsync();
             await GetExamsPrimary();
             new ToastContentBuilder().AddText("Success").AddText("Exam Created").Show();
-
+            return true;
         }
 
-        public static async Task UpdateExamPrimary(ExamsPrimary exam)
+        public static async Task<bool> UpdateExamPrimary(ExamsPrimary exam)
         {
-            if (exam == null) throw new ArgumentNullException(nameof(exam));
+            if (!ValidateExam(exam)) return false;
 
             const string sql = @" UPDATE ExamsPrimary SET 
                                     TeacherName = @teacher, SubjectName = @subject,
@@ -74,7 +78,7 @@ namespace ElectronicExam.Administrator.Helpers
             await cmd.ExecuteNonQueryAsync();
             await GetExamsPrimary();
             new ToastContentBuilder().AddText("Success").AddText("Exam Updated").Show();
-
+            return true;
         }
 
         public static async Task DeleteExamPrimary(int id)
@@ -84,6 +88,34 @@ namespace ElectronicExam.Administrator.Helpers
 
             await cmd.ExecuteNonQueryAsync();
             await GetExamsPrimary();
+        }
+
+        public static bool ValidateExam(ExamsPrimary exam)
+        {
+            var instance = MainWindow.instance;
+            string? error = null;
+
+            TimeSpan startLimit = new TimeSpan(7, 40, 0);  // 7:40 AM
+            TimeSpan endLimit = new TimeSpan(20, 0, 0);
+
+            if (exam.TeacherName.IsNullOrEmpty() || !exam.TeacherName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+                error = "Teacher Name most not be empty\nor contain any non-letter chars";
+            else if (exam.SubjectName.IsNullOrEmpty())
+                error = "Subject Name most not be empty";
+            else if (exam.Title.IsNullOrEmpty())
+                error = "Title most not be empty";
+            else if (exam.EDate <= DateTime.Now)
+                error = "Date Most not be empty or before today";
+            else if (exam.ETime == default ||
+                    (exam.ETime < startLimit || exam.ETime > endLimit))
+                error = "Exam Time Most be between 7:40 AM and 08:00 PM";
+
+            if (error != null)
+            {
+                instance.ShowInfo("Validation Error", error, InfoBarSeverity.Error);
+                return false;
+            }
+            return true;
         }
     }
 }

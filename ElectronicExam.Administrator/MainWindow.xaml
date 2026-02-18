@@ -21,7 +21,7 @@
             <NavigationViewItem Icon="Home"
                                 Content="Home"
                                 Tag="HomeView"
-                                IsSelected="True"/>
+                                IsSelected="True" />
             <NavigationViewItem Icon="People"
                                 Content="Students"
                                 Tag="StudentsView" />
@@ -33,6 +33,20 @@
                                 Content="Set Exam Questions"
                                 Tag="NewExamQuestion" />
         </NavigationView.MenuItems>
-        <Frame x:Name="ContentFrame" Padding="10" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Frame x:Name="ContentFrame"
+                   Padding="10"
+                   Grid.Row="0"
+                   x:FieldModifier="Public" />
+            <InfoBar Severity="Error"
+                     VerticalAlignment="Bottom"
+                     HorizontalAlignment="Right"
+                     x:Name="GlobalNotifier"
+                     Margin="20"
+                     IsClosable="False" />
+        </Grid>
     </NavigationView>
 </Window>

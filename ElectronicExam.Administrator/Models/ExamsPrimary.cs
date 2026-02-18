@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 using System;
-
 namespace ElectronicExam.Administrator.Models
 {
     public class ExamsPrimary : ObservableObject
@@ -26,17 +25,18 @@ namespace ElectronicExam.Administrator.Models
             set => SetProperty(ref field, value);
         }
 
-
-        public DateTimeOffset? EDate
+        public DateTimeOffset EDate
         {
             get => field;
             set => SetProperty(ref field, value);
-        }
-        public string getDate => EDate.Value.Date.ToString("yyyy-MM-dd");
+        } = DateTimeOffset.Now.AddDays(1);
+
+        public string getDate => EDate.Date.ToString("yyyy-MM-dd");
+
         public TimeSpan ETime
         {
             get => field;
             set => SetProperty(ref field, value);
-        }
+        } = new TimeSpan(7, 40, 0);
     }
 }

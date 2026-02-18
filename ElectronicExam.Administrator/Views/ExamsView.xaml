@@ -105,7 +105,7 @@
                                 BorderBrush="Transparent">
                             <SymbolIcon Symbol="More" />
                             <Button.Flyout>
-                                <Flyout Placement="Left">
+                                <Flyout Placement="LeftEdgeAlignedTop">
                                     <StackPanel Spacing="10">
                                         <Button Tag="{Binding id}"
                                                 x:Name="UpdateTeacher"
@@ -131,6 +131,19 @@
                                                         Spacing="10">
                                                 <SymbolIcon Symbol="Delete" />
                                                 <TextBlock Text="Delete" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Tag="{Binding id}"
+                                                x:Name="ViewQuestions"
+                                                Click="ViewQuestions_Click"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="10">
+                                                <SymbolIcon Symbol="List" />
+                                                <TextBlock Text="View Questions" />
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
