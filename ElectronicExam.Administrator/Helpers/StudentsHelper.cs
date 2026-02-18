@@ -24,24 +24,34 @@ namespace ElectronicExam.Administrator.Helpers
                     students.Add(new Students
                     {
                         id = reader.GetInt32(0),
-                        StudentName = reader.GetString(1),
-                        Code = reader.GetString(2),
-                        ClassName = reader.GetString(3),
-                        Grade = reader.GetInt32(4),
+                        FirstName = reader.GetString(1),
+                        MiddleName = reader.GetString(2),
+                        LastName = reader.GetString(3),
+                        Phone = reader.GetString(4),
+                        Email = reader.GetString(5),
+                        Gender = reader.GetString(6),
+                        Stage = reader.GetByte(7),
+                        Group = reader.GetString(8),
+                        Code = reader.GetString(9),
                     });
                 }
             }
         }
         public static async Task InsertStudent(Students student)
         {
-            const string sql = @"INSERT INTO students (SName, Code, ClassName, Grade)
-                                                        VALUES (@name, @code, @class, @grade)";
+            const string sql = @"INSERT INTO students (FirstName, MiddleName, LastName, Phone, Email, Gender, Stage, stuGroup, Code)
+                         VALUES (@fName, @mName, @lName, @phone, @email, @gender, @stage, @group, @code)";
 
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@name", student.StudentName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@fName", student.FirstName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@mName", student.MiddleName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@lName", student.LastName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@phone", student.Phone ?? string.Empty);
+            cmd.Parameters.AddWithValue("@email", student.Email ?? string.Empty);
+            cmd.Parameters.AddWithValue("@gender", student.Gender ?? string.Empty);
+            cmd.Parameters.AddWithValue("@stage", student.Stage);
+            cmd.Parameters.AddWithValue("@group", student.Group ?? string.Empty);
             cmd.Parameters.AddWithValue("@code", Guid.NewGuid().ToString("N")[..6].ToUpperInvariant());
-            cmd.Parameters.AddWithValue("@class", student.ClassName ?? string.Empty);
-            cmd.Parameters.AddWithValue("@grade", student.Grade);
 
             await cmd.ExecuteNonQueryAsync();
             await GetStudents();
@@ -52,12 +62,19 @@ namespace ElectronicExam.Administrator.Helpers
             if (student == null) throw new ArgumentNullException(nameof(student));
 
             const string sql = @"UPDATE students SET 
-                                    SName = @name, ClassName = @class, Grade = @grade WHERE id = @id";
+                        FirstName = @fName, MiddleName = @mName, LastName = @lName, 
+                        Phone = @phone, Email = @email, Gender = @gender, 
+                        Stage = @stage, stuGroup = @group WHERE id = @id";
 
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@name", student.StudentName ?? string.Empty);
-            cmd.Parameters.AddWithValue("@class", student.ClassName ?? string.Empty);
-            cmd.Parameters.AddWithValue("@grade", student.Grade);
+            cmd.Parameters.AddWithValue("@fName", student.FirstName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@mName", student.MiddleName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@lName", student.LastName ?? string.Empty);
+            cmd.Parameters.AddWithValue("@phone", student.Phone ?? string.Empty);
+            cmd.Parameters.AddWithValue("@email", student.Email ?? string.Empty);
+            cmd.Parameters.AddWithValue("@gender", student.Gender ?? string.Empty);
+            cmd.Parameters.AddWithValue("@stage", student.Stage);
+            cmd.Parameters.AddWithValue("@group", student.Group ?? string.Empty);
             cmd.Parameters.AddWithValue("@id", student.id);
 
             await cmd.ExecuteNonQueryAsync();

@@ -74,9 +74,9 @@ namespace ElectronicExam.Administrator.Views
 
             string text = sender.Text.Trim().ToLower();
             var rows = StudentsHelper.students.Where(x =>
-                          x.ClassName.Trim().ToLower().StartsWith(text) ||
+                          x.Group.Trim().ToLower().StartsWith(text) ||
                           x.Code.Trim().ToLower().StartsWith(text) ||
-                          x.StudentName.Trim().ToLower().StartsWith(text));
+                          x.FirstName.Trim().ToLower().StartsWith(text));
 
             myListView.ItemsSource = rows;
 

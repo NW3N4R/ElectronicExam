@@ -36,51 +36,91 @@
         <ListView x:Name="myListView"
                   x:FieldModifier="Public"
                   Grid.Row="1">
+
             <ListView.Header>
                 <Grid Padding="15,0,15,0"
-                      ColumnSpacing="20">
+                      ColumnSpacing="40">
+                    <Grid.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalTextAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </ResourceDictionary>
+                    </Grid.Resources>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Student Name" />
-
+                    <TextBlock Text="Full Name"
+                               HorizontalAlignment="Center" />
                     <TextBlock Grid.Column="1"
-                               Text="Code" />
+                               Text="Phone" />
                     <TextBlock Grid.Column="2"
-                               Text="ClassName" />
+                               Text="Email"
+                          />
                     <TextBlock Grid.Column="3"
-                               Text="Grade" />
+                               Text="Gender"
+                               HorizontalAlignment="Center" />
                     <TextBlock Grid.Column="4"
+                               Text="Stage"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Column="5"
+                               Text="Group"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Column="6"
+                               Text="Code"
+                               HorizontalAlignment="Center" />
+                    <TextBlock Grid.Column="7"
                                Text="Actions" />
                 </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid ColumnSpacing="20"
+                    <Grid ColumnSpacing="40"
                           Margin="0,5,0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="60" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding StudentName}"
-                                   VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding fullName}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="1"
-                                   Text="{Binding Code}"
-                                   VerticalAlignment="Center" />
+                                   Text="{Binding Phone}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="2"
-                                   Text="{Binding ClassName}"
-                                   VerticalAlignment="Center" />
+                                   Text="{Binding Email}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="3"
-                                   Text="{Binding Grade}"
-                                   VerticalAlignment="Center" />
-                        <Button Grid.Column="4"
+                                   Text="{Binding Gender}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="4"
+                                   Text="{Binding Stage}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="5"
+                                   Text="{Binding Group}"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="6"
+                                   Text="{Binding Code}"
+                                   HorizontalAlignment="Center" />
+                        <Button Grid.Column="7"
                                 Background="Transparent"
                                 BorderBrush="Transparent">
                             <SymbolIcon Symbol="More" />

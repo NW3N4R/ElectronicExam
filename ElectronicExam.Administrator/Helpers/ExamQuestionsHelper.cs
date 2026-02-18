@@ -31,7 +31,7 @@ namespace ElectronicExam.Administrator.Helpers
                         AnsB = reader.GetString(5),
                         AnsC = reader.GetString(6),
                         AnsD = reader.GetString(7),
-                        Mark = reader.GetInt32(8),
+                        Mark = reader.GetByte(8),
                         ExamId = reader.GetInt32(9)
                     });
                 }

@@ -6,29 +6,54 @@ namespace ElectronicExam.Administrator.Models
     {
         public int id { get; set; }
 
-        public string StudentName
+        public string FirstName
+        {
+            get => field ?? default!;
+            set => SetProperty(ref field, value);
+        }
+        public string MiddleName
+        {
+            get => field ?? default!;
+            set => SetProperty(ref field, value);
+        }
+        public string LastName
         {
             get => field ?? default!;
             set => SetProperty(ref field, value);
         }
 
-        public string Code
+        public string fullName => string.Concat(FirstName, " ", MiddleName, " ", LastName);
+        public string Phone
+        {
+            get => field ?? default!;
+            set => SetProperty(ref field, value);
+        }
+        public string Email
         {
             get => field ?? default!;
             set => SetProperty(ref field, value);
         } = "";
-
-        public string ClassName
+        public string? Code
         {
             get => field ?? default!;
             set => SetProperty(ref field, value);
-        } = "";
+        }
 
-        public int Grade
+        public string Group
+        {
+            get => field ?? default!;
+            set => SetProperty(ref field, value);
+        } = "A";
+
+        public byte Stage
         {
             get => field;
             set => SetProperty(ref field, value);
-        }
-
+        } = 1;
+        public string Gender
+        {
+            get => field;
+            set => SetProperty(ref field, value);
+        } = "Male";
     }
 }
