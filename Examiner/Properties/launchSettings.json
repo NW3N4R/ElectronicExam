@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Examiner (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Examiner (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

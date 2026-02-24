@@ -7,229 +7,248 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       Loaded="Page_Loaded"
       mc:Ignorable="d">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0"
-              ColumnSpacing="40"
-              Padding="10"
-              CornerRadius="10"
-              VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid Padding="10"
-                  CornerRadius="10"
-                  ColumnSpacing="20"
-                  RowSpacing="10"
-                  Background="{ThemeResource CardStrokeColorDefault}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid"
+                   x:Key="DetailsCard">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource SystemAccentColor}"
+                                         Opacity="0.1" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource SystemAccentColor}"
+                                         Opacity="0.8" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderThickness"
+                        Value="5,0,0,0" />
+                <Setter Property="Padding"
+                        Value="10" />
+                <Setter Property="ColumnSpacing"
+                        Value="5" />
+                <Setter Property="RowSpacing"
+                        Value="5" />
+                <Setter Property="CornerRadius"
+                        Value="10" />
+                <Setter Property="VerticalAlignment"
+                        Value="Center" />
+                <Setter Property="MinHeight"
+                        Value="120" />
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+    <StackPanel Spacing="10">
+        <StackPanel Grid.Column="3"
+                    Spacing="10"
+                    Margin="15,0,15,0"
+                    Orientation="Horizontal">
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="Button">
+                        <Setter Property="Background"
+                                Value="Transparent" />
+                        <Setter Property="BorderBrush"
+                                Value="Transparent" />
+                    </Style>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+            <Button x:Name="RefreshBttn"
+                    Click="RefreshBttn_Click"
+                    Content="Refresh" />
+            <Button x:Name="AddQuestion"
+                    Click="AddQuestion_Click"
+                    Content="Add Question" />
+            <Button x:Name="RemoveExam"
+                    Click="RemoveExam_Click"
+                    Content="Delete This Exam" />
+            <Button x:Name="JoiningStudents"
+                    Click="JoiningStudents_Click"
+                    Content="Assign this exam to a class" />
+            <Button x:Name="ExamResult"
+                    Click="ExamResult_Click"
+                    Content="Exam Result" />
+        </StackPanel>
+        <GridView CornerRadius="10"
+                  Margin="15,0,15,0"
+                  Padding="10"
+                  Background="{ThemeResource CardStrokeColorDefaultSolid}">
+            <GridView.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="MinWidth"
+                                Value="220" />
+                        <Setter Property="HorizontalAlignment"
+                                Value="Stretch" />
+                        <Setter Property="Padding"
+                                Value="10" />
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Left" />
+                        <Setter Property="HorizontalTextAlignment"
+                                Value="Left" />
+                    </Style>
+                </ResourceDictionary>
+            </GridView.Resources>
+            <GridView.Items>
                 <StackPanel>
                     <TextBlock Text="Instructor"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding header.TeacherName}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-                <StackPanel Grid.Row="1"
-                            Grid.ColumnSpan="2">
+                <StackPanel>
                     <TextBlock Text="Subject"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding header.SubjectName}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-                <StackPanel Grid.Column="1">
+                <StackPanel>
                     <TextBlock Text="Exam Title"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding header.Title}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-            </Grid>
-            <Grid Padding="10"
-                  CornerRadius="10"
-                  ColumnSpacing="20"
-                  Grid.Column="1"
-                  RowSpacing="10"
-                  Background="{ThemeResource CardStrokeColorDefault}">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Text="Exam Date"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding header.getDate}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-                <StackPanel Grid.Row="1">
+                <StackPanel>
                     <TextBlock Text="Exam Time"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding header.ETime}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-                <StackPanel Grid.Column="1">
+                <StackPanel>
                     <TextBlock Text="Exam Total Mark"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding TotalMark}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-                <StackPanel Grid.Row="1"
-                            Grid.Column="1">
+                <StackPanel>
                     <TextBlock Text="Total Questions"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding TotalQuestions}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-            </Grid>
-            <Grid Padding="10"
-                  CornerRadius="10"
-                  ColumnSpacing="20"
-                  Grid.Column="2"
-                  RowSpacing="10"
-                  Background="{ThemeResource CardStrokeColorDefault}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        x:Name="RefreshBttn"
-                        Click="RefreshBttn_Click">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <SymbolIcon Symbol="Refresh" />
-                        <TextBlock Text="Refresh"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-                <Button Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        x:Name="AddQuestion"
-                        Click="AddQuestion_Click"
-                        Background="Transparent"
-                        BorderBrush="Transparent">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <SymbolIcon Symbol="Add" />
-                        <TextBlock Text="Add Question"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-                <Button Grid.Row="1"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        x:Name="RemoveExam"
-                        Click="RemoveExam_Click">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="10">
-                        <SymbolIcon Symbol="Delete" />
-                        <TextBlock Text="Remove This Exam"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            </Grid>
-        </Grid>
-        <ListView Grid.Row="1"
+                <StackPanel>
+                    <TextBlock Text="Joined Students"
+                               Style="{ThemeResource CaptionTextBlockStyle}" />
+                    <TextBlock Text="{Binding JoinedStudents}"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="un-attended Students"
+                               Style="{ThemeResource CaptionTextBlockStyle}" />
+                    <TextBlock Text="{Binding UnAttended}"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Attended Students"
+                               HorizontalAlignment="Left"
+                               Style="{ThemeResource CaptionTextBlockStyle}" />
+                    <TextBlock Text="{Binding Attended}"
+                               HorizontalAlignment="Left"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Passed Students"
+                               Style="{ThemeResource CaptionTextBlockStyle}" />
+                    <TextBlock Text="{Binding PassedStudents}"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Failed Students"
+                               Style="{ThemeResource CaptionTextBlockStyle}" />
+                    <TextBlock Text="{Binding FailedStudents}"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" />
+                </StackPanel>
+            </GridView.Items>
+        </GridView>
+        <GridView Grid.Row="1"
                   ItemsSource="{Binding tempQuestions}"
-                  SelectionMode="None">
-            <ListView.ItemTemplate>
+                  SelectionMode="None"
+                  IsItemClickEnabled="False"
+                  HorizontalAlignment="Center">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"
+                                   ItemWidth="330" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Padding="10"
                                 CornerRadius="10"
-                                Margin="0,5,0,5"
-                                Background="{ThemeResource CardStrokeColorDefault}"
-                                Spacing="10">
+                                Spacing="10"
+                                Background="{ThemeResource CardStrokeColorDefaultSolid}"
+                                Margin="5">
+
                         <StackPanel>
-                            <TextBlock Text="{Binding Question,Mode=TwoWay}"
-                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                            <TextBlock Text="{Binding Explaining,Mode=TwoWay}"
-                                       Style="{ThemeResource BodyStrongTextBlockStyle}"
-                                       Grid.Row="1" />
+                            <TextBlock Text="{Binding Question}"
+                                       Style="{ThemeResource SubtitleTextBlockStyle}"
+                                       TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Explaining}"
+                                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
                         </StackPanel>
+
                         <Grid Margin="0,5,0,0"
                               ColumnSpacing="20">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
+
                             <TextBlock Text="{Binding AnsA}" />
                             <TextBlock Text="{Binding AnsB}"
                                        Grid.Column="1" />
                             <TextBlock Text="{Binding AnsC}"
                                        Grid.Row="1" />
-                            <TextBlock Text="{Binding AnsC}"
+                            <TextBlock Text="{Binding AnsD}"
                                        Grid.Row="1"
                                        Grid.Column="1" />
                         </Grid>
+
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Right"
                                     Spacing="10">
+
                             <StackPanel Orientation="Horizontal"
                                         Spacing="4">
-                                <TextBlock Text="Correct Answeer:"
-                                           Grid.Row="1"
-                                           VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding CorrectAnsweer}"
-                                           Grid.Row="1"
-                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Correct Answer:" />
+                                <TextBlock Text="{Binding CorrectAnsweer}" />
                             </StackPanel>
+
                             <StackPanel Orientation="Horizontal"
                                         Spacing="4">
-                                <TextBlock Text="Mark:"
-                                           Grid.Row="1"
-                                           VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding Mark}"
-                                           Grid.Row="1"
-                                           VerticalAlignment="Center" />
+                                <TextBlock Text="Mark:" />
+                                <TextBlock Text="{Binding Mark}" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="0">
-                                <AppBarButton LabelPosition="Collapsed"
-                                              Icon="Edit"
+
+                            <StackPanel Orientation="Horizontal">
+                                <AppBarButton Icon="Edit"
+                                              LabelPosition="Collapsed"
                                               Tag="{Binding id}"
-                                              x:Name="UpdateQuestionBttn"
                                               Click="UpdateQuestionBttn_Click" />
-                                <AppBarButton LabelPosition="Collapsed"
-                                              Icon="Delete"
+
+                                <AppBarButton Icon="Delete"
+                                              LabelPosition="Collapsed"
                                               Tag="{Binding id}"
-                                              x:Name="DeleteQuestionBttn"
                                               Click="DeleteQuestionBttn_Click" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+            </GridView.ItemTemplate>
+        </GridView>
+    </StackPanel>
 </Page>

@@ -15,8 +15,6 @@ public sealed partial class ExamQuestionsView : Page
 {
     public ExamsPrimary? header { get; set; }
     public ObservableCollection<ExamQuestions> tempQuestions { get; set; } = new();
-    public int TotalMark { get; set; }
-    public int TotalQuestions { get; set; }
     public ExamQuestionsView()
     {
         InitializeComponent();
@@ -35,9 +33,14 @@ public sealed partial class ExamQuestionsView : Page
         if (header == null)
             return;
         tempQuestions = await ExamQuestionsHelper.GetExamQuestions(header.id);
+        await JoinedStudentsHelper.GetJoinedStudents();
+        var thisExam = JoinedStudentsHelper.joinedStudents.Where(x => x.ExamId == header.id);
         TotalMark = tempQuestions.Sum(x => x.Mark);
         TotalQuestions = tempQuestions.Count;
         this.DataContext = null;
+        JoinedStudents = thisExam.Count();
+        UnAttended = thisExam.Where(x => x.JoinedDateTime is null).Count();
+        Attended = thisExam.Where(x => x.JoinedDateTime is not null).Count();
         this.DataContext = this;
     }
     private async void DeleteQuestionBttn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
@@ -138,4 +141,41 @@ public sealed partial class ExamQuestionsView : Page
         };
         await dialog.ShowAsync();
     }
+    private async void JoiningStudents_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var joiner = new JoiningStudents(header!.id);
+        var dialog = new ContentDialog()
+        {
+            Title = "Setting This Exam for a Class",
+            Content = joiner,
+            PrimaryButtonText = "Set",
+            SecondaryButtonText = "Cancel",
+            XamlRoot = this.XamlRoot,
+        };
+        dialog.PrimaryButtonClick += async (s, e) =>
+        {
+            foreach (var item in joiner.StudentIds)
+            {
+                var model = new JoinedStudents
+                {
+                    StudentId = item,
+                    ExamId = header.id
+                };
+                await JoinedStudentsHelper.InsertJoinedStudent(model);
+            }
+            load();
+        };
+        await dialog.ShowAsync();
+    }
+    private void ExamResult_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+
+    }
+    public int TotalMark { get; set; }
+    public int TotalQuestions { get; set; }
+    public int JoinedStudents { get; set; }
+    public int UnAttended { get; set; }
+    public int Attended { get; set; }
+    public int PassedStudents { get; set; }
+    public int FailedStudents { get; set; }
 }

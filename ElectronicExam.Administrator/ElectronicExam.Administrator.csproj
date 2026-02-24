@@ -19,6 +19,7 @@
 		<None Remove="Updaters\UpdateQuestion.xaml" />
 		<None Remove="Updaters\UpdateStudent.xaml" />
 		<None Remove="Uploaders\AddQuestion.xaml" />
+		<None Remove="Uploaders\JoiningStudents.xaml" />
 		<None Remove="Uploaders\NewExam.xaml" />
 		<None Remove="Uploaders\NewExamQuestion.xaml" />
 		<None Remove="Uploaders\NewStudent.xaml" />
@@ -55,9 +56,14 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
 		<PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260101001" />
-		<PackageReference Include="System.Drawing.Common" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260209005" />
+		<PackageReference Include="System.Drawing.Common" Version="10.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Uploaders\JoiningStudents.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Uploaders\AddQuestion.xaml">

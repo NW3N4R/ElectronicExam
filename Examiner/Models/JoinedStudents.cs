@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ElectronicExam.Administrator.Models
+namespace Examiner.Models
 {
     public class JoinedStudents
     {

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="Examiner.Views.QuestionView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Examiner.Views"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Loaded="Page_Loaded"
+      xmlns:equals="using:Examiner"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <equals:EqualsConverter x:Key="EqualsConverter" />
+    </Page.Resources>
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="TitleBar"
+                    Spacing="20"
+                    Orientation="Horizontal">
+            <TextBlock Text="{Binding student.fullName}" />
+            <TextBlock Text="{Binding exam.SubjectName}" />
+            <TextBlock Text="{Binding exam.Title}" />
+            <TextBlock Text="{Binding exam.getDate}" />
+            <TextBlock Text="{Binding exam.ETime}" />
+        </StackPanel>
+        <Grid Grid.Row="1"
+              Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel x:Name="CurrentQuestionContainer"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="20"
+                        MinWidth="320">
+                <TextBlock Text="{Binding Question}" />
+                <TextBlock Text="{Binding Explaining}" />
+                <RadioButtons x:Name="AnswersRadio"
+                              Tag="{Binding id}">
+                    <RadioButton Content="{Binding AnsA}"
+                                 Tag="A"
+                                 IsChecked="{Binding SelectedAnsweer, Mode=TwoWay, Converter={StaticResource EqualsConverter}, ConverterParameter=A}" />
+                    <RadioButton Content="{Binding AnsB}"
+                                 Tag="B"
+                                 IsChecked="{Binding SelectedAnsweer, Mode=TwoWay, Converter={StaticResource EqualsConverter}, ConverterParameter=B}" />
+                    <RadioButton Content="{Binding AnsC}"
+                                 Tag="C"
+                                 IsChecked="{Binding SelectedAnsweer, Mode=TwoWay, Converter={StaticResource EqualsConverter}, ConverterParameter=C}" />
+                    <RadioButton Content="{Binding AnsD}"
+                                 Tag="D"
+                                 IsChecked="{Binding SelectedAnsweer, Mode=TwoWay, Converter={StaticResource EqualsConverter}, ConverterParameter=D}" />
+                </RadioButtons>
+            </StackPanel>
+            <ListView Grid.Column="1"
+                      x:Name="QuestionsTileList"
+                      BorderThickness="2,0,0,0"
+                      CornerRadius="10"
+                      Margin="10"
+                      SelectedIndex="0"
+                      SelectionChanged="QuestionsTileList_SelectionChanged"
+                      VerticalAlignment="Center"
+                      Background="{ThemeResource CardBackgroundFillColorSecondary}"
+                      MaxHeight="520">
+                <ListView.BorderBrush>
+                    <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
+                </ListView.BorderBrush>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox IsEnabled="True"
+                                  IsChecked="{Binding isAnsweered}"
+                                  Grid.Column="1"
+                                  HorizontalAlignment="Left"
+                                  IsHitTestVisible="False"
+                                  HorizontalContentAlignment="Left"
+                                  Content="{Binding Question}"
+                                  Margin="20" />
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="2"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid HorizontalAlignment="Center"
+                  ColumnSpacing="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Next"
+                        Click="Next_Click"
+                        Grid.Column="1"
+                        MinWidth="220">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Text="Next Question" />
+                        <SymbolIcon Symbol="Forward" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="Previous"
+                        Click="Previous_Click"
+                        IsEnabled="False"
+                        HorizontalAlignment="Center"
+                        MinWidth="220">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="10">
+                        <SymbolIcon Symbol="Back" />
+                        <TextBlock Text="Previous Question" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Button x:Name="SendAnsweers"
+                    DoubleTapped="SendAnsweers_DoubleTapped"
+                    Background="{StaticResource SystemAccentColor}"
+                    Grid.Column="1"
+                    MinWidth="220">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="10">
+                    <SymbolIcon Symbol="Accept" />
+                    <TextBlock Text="Submit Questions" />
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>

@@ -26,7 +26,7 @@ namespace ElectronicExam.Administrator.Helpers
                         id = reader.GetInt32(0),
                         StudentId = reader.GetInt32(1),
                         ExamId = reader.GetInt32(2),
-                        JoinedDateTime = reader.GetDateTime(3)
+                        JoinedDateTime = reader.IsDBNull(3) ? null : reader.GetDateTime(3),
                     });
                 }
             }
@@ -42,7 +42,7 @@ namespace ElectronicExam.Administrator.Helpers
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
             cmd.Parameters.AddWithValue("@studentId", item.StudentId);
             cmd.Parameters.AddWithValue("@examId", item.ExamId);
-            cmd.Parameters.AddWithValue("@DateTimeJoined", item.JoinedDateTime);
+            cmd.Parameters.AddWithValue("@DateTimeJoined", DBNull.Value);
 
             await cmd.ExecuteNonQueryAsync();
             await GetJoinedStudents();
