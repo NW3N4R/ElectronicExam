@@ -7,22 +7,22 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.UI.Xaml.Controls;
 
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 namespace ElectronicExam.Administrator.Views;
 
 public sealed partial class ExamQuestionsView : Page
 {
-    public ExamsPrimary? header { get; set; }
-    public ObservableCollection<ExamQuestions> tempQuestions { get; set; } = new();
+    public ExamAnalysis Analysis { get; set; }
     public ExamQuestionsView()
     {
         InitializeComponent();
+        Analysis = new();
     }
     protected override void OnNavigatedTo(Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        header = (ExamsPrimary)e.Parameter;
+        Analysis.ExamHeader = (ExamsPrimary)e.Parameter;
+        this.DataContext = Analysis;
     }
     private async void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
@@ -30,22 +30,36 @@ public sealed partial class ExamQuestionsView : Page
     }
     private async void load()
     {
-        if (header == null)
-            return;
-        tempQuestions = await ExamQuestionsHelper.GetExamQuestions(header.id);
+
+        Analysis.ThisExamQuestions = await ExamQuestionsHelper.GetExamQuestions(Analysis.ExamHeader!.id);
         await JoinedStudentsHelper.GetJoinedStudents();
-        var thisExam = JoinedStudentsHelper.joinedStudents.Where(x => x.ExamId == header.id);
-        TotalMark = tempQuestions.Sum(x => x.Mark);
-        TotalQuestions = tempQuestions.Count;
-        this.DataContext = null;
-        JoinedStudents = thisExam.Count();
-        UnAttended = thisExam.Where(x => x.JoinedDateTime is null).Count();
-        Attended = thisExam.Where(x => x.JoinedDateTime is not null).Count();
-        this.DataContext = this;
+        await AnsweersHelper.GetAnsweers();
+        var joinedStudents = JoinedStudentsHelper.joinedStudents.Where(x => x.ExamId == Analysis.ExamHeader.id);
+        var answers = AnsweersHelper.answeers.Where(x => Analysis.ThisExamQuestions.Any(q => q.id == x.QuestionId) && x.Mark > 0);
+
+        Analysis.StudentsResult.Clear();
+        var results = answers
+    .GroupBy(x => x.StudentId)
+    .Select(g => new StudentResult
+    {
+        StudentId = g.Key,
+        TotalMark = (byte)g.Sum(x => x.Mark),
+        // Calculate pass status immediately
+        isPassed = g.Sum(x => x.Mark) >= (Analysis.TotalMark / 2.0)
+    });
+        foreach (var res in results)
+        {
+            Analysis.StudentsResult.Add(res);
+        }
+        Analysis.JoinedStudentsNo = joinedStudents.Count();
+        Analysis.UnAttended = joinedStudents.Where(x => x.JoinedDateTime is null).Count();
+        Analysis.Attended = joinedStudents.Where(x => x.JoinedDateTime is not null).Count();
+        Analysis.PassedStudents = Analysis.StudentsResult.Where(x => x.isPassed).Count();
+        Analysis.FailedStudents = Analysis.JoinedStudentsNo - Analysis.PassedStudents;
     }
     private async void DeleteQuestionBttn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var bttn = sender as AppBarButton;
+        var bttn = sender as Button;
         if (bttn!.Tag is not int QuestionId)
             return;
         var dialog = new ContentDialog()
@@ -58,21 +72,25 @@ public sealed partial class ExamQuestionsView : Page
         };
         dialog.PrimaryButtonClick += async (s, e) =>
         {
-            await ExamQuestionsHelper.DeleteExamQuestion(QuestionId);
-            new ToastContentBuilder().AddText("Success").AddText("Exam Questions Removed").Show();
-            var model = tempQuestions.First(x => x.id == QuestionId);
-            tempQuestions.Remove(model);
+            bool isDelete = await ExamQuestionsHelper.DeleteExamQuestion(QuestionId);
+            if (isDelete)
+                new ToastContentBuilder().AddText("Success").AddText("Exam Questions Removed").Show();
+            else
+                new ToastContentBuilder().AddText("Failure").AddText("Question Couldn't Be deleted it might be answeered").Show();
+            var model = Analysis.ThisExamQuestions?.First(x => x.id == QuestionId);
+            if (model != null)
+                Analysis.ThisExamQuestions?.Remove(model);
             load();
         };
         await dialog.ShowAsync();
     }
     private async void UpdateQuestionBttn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var bttn = sender as AppBarButton;
+        var bttn = sender as Button;
         if (bttn!.Tag is not int QuestionId)
             return;
 
-        var model = tempQuestions.First(x => x.id == QuestionId);
+        var model = Analysis.ThisExamQuestions.First(x => x.id == QuestionId);
         var dialog = new ContentDialog()
         {
             Title = "Updating Question",
@@ -109,7 +127,7 @@ public sealed partial class ExamQuestionsView : Page
         dialog.PrimaryButtonClick +=
             async (s, e) =>
             {
-                await ExamPrimaryHelper.DeleteExamPrimary(header!.id);
+                await ExamPrimaryHelper.DeleteExamPrimary(Analysis.ExamHeader!.id);
             };
 
         await dialog.ShowAsync();
@@ -117,7 +135,7 @@ public sealed partial class ExamQuestionsView : Page
     }
     private async void AddQuestion_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var uploader = new AddQuestion(header!.id);
+        var uploader = new AddQuestion(Analysis.ExamHeader!.id);
 
         var dialog = new ContentDialog()
         {
@@ -143,7 +161,7 @@ public sealed partial class ExamQuestionsView : Page
     }
     private async void JoiningStudents_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        var joiner = new JoiningStudents(header!.id);
+        var joiner = new JoiningStudents(Analysis.ExamHeader!.id);
         var dialog = new ContentDialog()
         {
             Title = "Setting This Exam for a Class",
@@ -159,7 +177,7 @@ public sealed partial class ExamQuestionsView : Page
                 var model = new JoinedStudents
                 {
                     StudentId = item,
-                    ExamId = header.id
+                    ExamId = Analysis.ExamHeader.id
                 };
                 await JoinedStudentsHelper.InsertJoinedStudent(model);
             }
@@ -167,15 +185,19 @@ public sealed partial class ExamQuestionsView : Page
         };
         await dialog.ShowAsync();
     }
-    private void ExamResult_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private async void ExamResult_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-
+        var dialog = new ContentDialog()
+        {
+            Title = "Exam Full Result View",
+            Content = new ExamsResultView(Analysis.ExamHeader!),
+            SecondaryButtonText = "Close",
+            IsPrimaryButtonEnabled = false,
+            XamlRoot = this.XamlRoot,
+        };
+        await dialog.ShowAsync();
     }
-    public int TotalMark { get; set; }
-    public int TotalQuestions { get; set; }
-    public int JoinedStudents { get; set; }
-    public int UnAttended { get; set; }
-    public int Attended { get; set; }
-    public int PassedStudents { get; set; }
-    public int FailedStudents { get; set; }
+
+
 }
+

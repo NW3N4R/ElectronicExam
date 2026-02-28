@@ -77,7 +77,7 @@ namespace Examiner.Views
                         QuestionId = q.id,
                         SelectedAnsweer = q.SelectedAnsweer,
                         ExamId = session.ExamHeader!.id,
-                        isCorrect = q.CorrectAnsweer == q.SelectedAnsweer
+                        Mark = (byte)(q.SelectedAnsweer == q.CorrectAnsweer ? q.Mark : 0)
                     };
                     await AnsweersHelper.InsertAnsweer(answerModel);
                 }

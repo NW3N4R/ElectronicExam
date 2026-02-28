@@ -123,14 +123,22 @@ namespace ElectronicExam.Administrator.Helpers
             return true;
         }
 
-        public static async Task DeleteExamQuestion(int id)
+        public static async Task<bool> DeleteExamQuestion(int id)
         {
-            if (id <= 0) throw new ArgumentException("Invalid question id.", nameof(id));
+            try
+            {
+                if (id <= 0) throw new ArgumentException("Invalid question id.", nameof(id));
 
-            using var cmd = new SqlCommand("DELETE FROM ExamQuestions WHERE id = @id", ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@id", id);
-            await cmd.ExecuteNonQueryAsync();
-            await GetExamQuestions();
+                using var cmd = new SqlCommand("DELETE FROM ExamQuestions WHERE id = @id", ConnectionHelper.connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                await cmd.ExecuteNonQueryAsync();
+                await GetExamQuestions();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static bool ValidatedQuestion(ExamQuestions question)

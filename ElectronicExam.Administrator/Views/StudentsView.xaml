@@ -128,6 +128,19 @@
                                 <Flyout Placement="Left">
                                     <StackPanel Spacing="10">
                                         <Button Tag="{Binding id}"
+                                                x:Name="ViewExams"
+                                                Click="ViewExams_Click"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Left">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="10">
+                                                <SymbolIcon Symbol="View" />
+                                                <TextBlock Text="Exams" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Tag="{Binding id}"
                                                 x:Name="UpdateStudent"
                                                 Background="Transparent"
                                                 BorderBrush="Transparent"

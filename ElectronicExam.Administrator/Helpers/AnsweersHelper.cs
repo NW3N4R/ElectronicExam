@@ -25,51 +25,12 @@ namespace ElectronicExam.Administrator.Helpers
                     {
                         id = reader.GetInt32(0),
                         StudentId = reader.GetInt32(1),
-                        ExamId = reader.GetInt32(2),
-                        QuestionId = reader.GetInt32(3),
-                        SelectedAnsweer = reader.GetString(4),
-                        isCorrect = reader.GetBoolean(5),
+                        QuestionId = reader.GetInt32(2),
+                        SelectedAnsweer = reader.GetString(3),
+                        Mark = reader.GetByte(4),
                     });
                 }
             }
-        }
-
-        public static async Task InsertAnsweer(Answeers item)
-        {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-
-            const string sql = @"INSERT INTO answeers (studentId, ExamId, questionId, SelectedAnsweers, isCorrect)
-                                VALUES (@studentId, @examId, @questionId, @selected, @isCorrect)";
-
-            using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@studentId", item.StudentId);
-            cmd.Parameters.AddWithValue("@examId", item.ExamId);
-            cmd.Parameters.AddWithValue("@questionId", item.QuestionId);
-            cmd.Parameters.AddWithValue("@selected", item.SelectedAnsweer ?? string.Empty);
-            cmd.Parameters.AddWithValue("@isCorrect", item.isCorrect);
-
-            await cmd.ExecuteNonQueryAsync();
-            await GetAnsweers();
-        }
-
-        public static async Task UpdateAnsweer(Answeers item)
-        {
-            if (item == null) throw new ArgumentNullException(nameof(item));
-
-            const string sql = @" UPDATE answeers SET studentId = @studentId,
-                                ExamId = @examId, questionId = @questionId,
-                                SelectedAnsweers = @selected, isCorrect = @ WHERE id = @id";
-
-            using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@studentId", item.StudentId);
-            cmd.Parameters.AddWithValue("@examId", item.ExamId);
-            cmd.Parameters.AddWithValue("@questionId", item.QuestionId);
-            cmd.Parameters.AddWithValue("@selected", item.SelectedAnsweer ?? string.Empty);
-            cmd.Parameters.AddWithValue("@isCorrect", item.isCorrect);
-            cmd.Parameters.AddWithValue("@id", item.id);
-
-            await cmd.ExecuteNonQueryAsync();
-            await GetAnsweers();
         }
 
         public static async Task DeleteAnsweer(int id)

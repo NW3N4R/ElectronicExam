@@ -70,5 +70,10 @@ namespace ElectronicExam.Administrator
             await Task.Delay(3000);
             GlobalNotifier.IsOpen = false;
         }
+
+        private void ContentFrame_Navigated(object sender, Microsoft.UI.Xaml.Navigation.NavigationEventArgs e)
+        {
+            GlobalNavigator.IsPaneOpen = false;
+        }
     }
 }

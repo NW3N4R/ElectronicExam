@@ -6,12 +6,10 @@
 
         public int StudentId { get; set; }
 
-        public int ExamId { get; set; }
-
         public int QuestionId { get; set; }
 
         public string SelectedAnsweer { get; set; } = "";
 
-        public bool isCorrect { get; set; }
+        public byte Mark { get; set; }
     }
 }

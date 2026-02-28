@@ -83,11 +83,17 @@ namespace ElectronicExam.Administrator.Helpers
 
         public static async Task DeleteExamPrimary(int id)
         {
-            using var cmd = new SqlCommand("DELETE FROM ExamsPrimary WHERE id = @id", ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@id", id);
+            try
+            {
+                using var cmd = new SqlCommand("DELETE FROM ExamsPrimary WHERE id = @id", ConnectionHelper.connection);
+                cmd.Parameters.AddWithValue("@id", id);
 
-            await cmd.ExecuteNonQueryAsync();
-            await GetExamsPrimary();
+                await cmd.ExecuteNonQueryAsync();
+                await GetExamsPrimary();
+            }
+            catch (SqlException)
+            {
+            }
         }
 
         public static bool ValidateExam(ExamsPrimary exam)

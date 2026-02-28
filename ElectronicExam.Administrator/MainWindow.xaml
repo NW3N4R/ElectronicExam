@@ -40,7 +40,8 @@
             <Frame x:Name="ContentFrame"
                    Padding="10"
                    Grid.Row="0"
-                   x:FieldModifier="Public" />
+                   x:FieldModifier="Public" 
+                   Navigated="ContentFrame_Navigated"/>
             <InfoBar Severity="Error"
                      VerticalAlignment="Bottom"
                      HorizontalAlignment="Right"

@@ -23,9 +23,12 @@
 		<None Remove="Uploaders\NewExam.xaml" />
 		<None Remove="Uploaders\NewExamQuestion.xaml" />
 		<None Remove="Uploaders\NewStudent.xaml" />
+		<None Remove="Views\AnsweersView.xaml" />
 		<None Remove="Views\ExamQuestionsView.xaml" />
+		<None Remove="Views\ExamsResultView.xaml" />
 		<None Remove="Views\ExamsView.xaml" />
 		<None Remove="Views\HomeView.xaml" />
+		<None Remove="Views\StudentExamsView.xaml" />
 		<None Remove="Views\StudentsView.xaml" />
 		<None Remove="Views\TeachersView.xaml" />
 	</ItemGroup>
@@ -59,6 +62,21 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260209005" />
 		<PackageReference Include="System.Drawing.Common" Version="10.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\StudentExamsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\AnsweersView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\ExamsResultView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Page Update="Uploaders\JoiningStudents.xaml">

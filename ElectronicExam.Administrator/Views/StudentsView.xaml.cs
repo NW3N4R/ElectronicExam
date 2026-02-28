@@ -3,6 +3,7 @@ using ElectronicExam.Administrator.Updaters;
 
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Media.Animation;
 
 using System;
 using System.Diagnostics;
@@ -80,6 +81,17 @@ namespace ElectronicExam.Administrator.Views
 
             myListView.ItemsSource = rows;
 
+        }
+
+        private void ViewExams_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            var bttn = sender as Button;
+            if (bttn?.Tag is not Int32 id)
+                throw new Exception("tag was null");
+
+            var student = StudentsHelper.students.First(x => x.id == id);
+
+            MainWindow.instance.ContentFrame.Navigate(typeof(StudentExamsView), student, new SuppressNavigationTransitionInfo());
         }
     }
 }
