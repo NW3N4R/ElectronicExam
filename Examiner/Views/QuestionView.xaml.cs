@@ -16,7 +16,7 @@ namespace Examiner.Views
             InitializeComponent();
             TitleBar.DataContext = new titleBarModel();
             session.ExamQuestions!.CollectionChanged += ExamQuestions_CollectionChanged;
-            _timer.Interval = TimeSpan.FromMinutes(0.001).TotalMilliseconds;
+            _timer.Interval = TimeSpan.FromMinutes(1).TotalMilliseconds;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
 
