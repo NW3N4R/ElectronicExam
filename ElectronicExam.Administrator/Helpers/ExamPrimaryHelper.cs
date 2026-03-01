@@ -32,7 +32,9 @@ namespace ElectronicExam.Administrator.Helpers
                         SubjectName = reader.GetString(2),
                         Title = reader.GetString(3),
                         EDate = new DateTimeOffset(reader.GetDateTime(4)),
-                        ETime = reader.GetTimeSpan(5)
+                        ETime = reader.GetTimeSpan(5),
+                        DurationHour = reader.GetInt32(6),
+                        DurationMin = reader.GetInt32(7),
                     });
                 }
             }
@@ -43,8 +45,8 @@ namespace ElectronicExam.Administrator.Helpers
 
             if (!ValidateExam(exam)) return false;
 
-            const string sql = @" INSERT INTO ExamsPrimary (TeacherName, SubjectName, Title,EDate,ETime)
-                                    VALUES (@teacher, @subject, @title,@EDate,@ETime)";
+            const string sql = @" INSERT INTO ExamsPrimary (TeacherName, SubjectName, Title,EDate,ETime,durationHours,DurationMin)
+                                    VALUES (@teacher, @subject, @title,@EDate,@ETime,@dh,@dm)";
 
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
             cmd.Parameters.AddWithValue("@teacher", exam.TeacherName ?? string.Empty);
@@ -52,6 +54,8 @@ namespace ElectronicExam.Administrator.Helpers
             cmd.Parameters.AddWithValue("@title", exam.Title ?? string.Empty);
             cmd.Parameters.AddWithValue("@EDate", exam.EDate);
             cmd.Parameters.AddWithValue("@ETime", exam.ETime);
+            cmd.Parameters.AddWithValue("@dh", exam.DurationHour);
+            cmd.Parameters.AddWithValue("@dm", exam.DurationMin);
 
             await cmd.ExecuteNonQueryAsync();
             await GetExamsPrimary();
@@ -65,7 +69,7 @@ namespace ElectronicExam.Administrator.Helpers
 
             const string sql = @" UPDATE ExamsPrimary SET 
                                     TeacherName = @teacher, SubjectName = @subject,
-                                    Title = @title,EDate = @EDate,ETime = @ETime WHERE id = @id";
+                                    Title = @title,EDate = @EDate,ETime = @ETime, durationHours = @dh,durationMin = @dm  WHERE id = @id";
 
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
             cmd.Parameters.AddWithValue("@teacher", exam.TeacherName ?? string.Empty);
@@ -73,6 +77,8 @@ namespace ElectronicExam.Administrator.Helpers
             cmd.Parameters.AddWithValue("@title", exam.Title ?? string.Empty);
             cmd.Parameters.AddWithValue("@EDate", exam.EDate);
             cmd.Parameters.AddWithValue("@ETime", exam.ETime);
+            cmd.Parameters.AddWithValue("@dh", exam.DurationHour);
+            cmd.Parameters.AddWithValue("@dm", exam.DurationMin);
             cmd.Parameters.AddWithValue("@id", exam.id);
 
             await cmd.ExecuteNonQueryAsync();

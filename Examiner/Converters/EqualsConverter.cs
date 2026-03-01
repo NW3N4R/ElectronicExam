@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Examiner
+namespace Examiner.Converters
 {
     public class EqualsConverter : IValueConverter
     {

@@ -45,7 +45,6 @@
                       MinWidth="120"
                       VerticalAlignment="Center"
                       SelectionChanged="SubjectsFilterCombo_SelectionChanged" />
-
             <DatePicker x:Name="FilterByDate"
                         HorizontalAlignment="Stretch"
                         MonthFormat="{}{month.integer(2)}"
@@ -65,6 +64,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto"
                                           MinWidth="80" />
                     </Grid.ColumnDefinitions>
@@ -77,12 +77,15 @@
                                Grid.Column="3" />
                     <TextBlock Text="Time"
                                Grid.Column="4" />
+                    <TextBlock Text="Duration"
+                               Grid.Column="5" />
                 </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnSpacing="10">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -100,7 +103,9 @@
                                    Grid.Column="3" />
                         <TextBlock Text="{Binding ETime}"
                                    Grid.Column="4" />
-                        <Button Grid.Column="5"
+                        <TextBlock Text="{Binding Duration}"
+                                   Grid.Column="5" />
+                        <Button Grid.Column="6"
                                 Background="Transparent"
                                 BorderBrush="Transparent">
                             <SymbolIcon Symbol="More" />

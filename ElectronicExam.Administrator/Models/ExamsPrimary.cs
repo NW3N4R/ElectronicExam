@@ -38,5 +38,19 @@ namespace ElectronicExam.Administrator.Models
             get => field;
             set => SetProperty(ref field, value);
         } = new TimeSpan(7, 40, 0);
+
+        public int DurationHour
+        {
+            get => field;
+            set => SetProperty(ref field, value);
+        }
+
+        public int DurationMin
+        {
+            get => field;
+            set => SetProperty(ref field, value);
+        }
+
+        public string Duration => $"{DurationHour.ToString().PadLeft(2, '0')}:{DurationMin.ToString().PadLeft(2, '0')}";
     }
 }

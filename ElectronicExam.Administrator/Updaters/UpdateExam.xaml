@@ -6,10 +6,15 @@
     xmlns:local="using:ElectronicExam.Administrator.Updaters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+      xmlns:conv="using:ElectronicExam.Administrator.valueConverters"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <conv:StringToDecimal x:Key="toDecimal" />
+    </Page.Resources>
 
     <Grid RowSpacing="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -38,10 +43,38 @@
                     HorizontalAlignment="Stretch"
                     x:Name="TimeSelector"
                     SelectedTime="{Binding ETime,Mode=TwoWay}" />
+
+        <Grid   Grid.Row="5"
+                Padding="10"
+                CornerRadius="10"
+                Background="{StaticResource CardBackgroundFillColorDefault}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Exam Duration" />
+            <Grid Grid.Row="1"
+                  HorizontalAlignment="Stretch"
+                  ColumnSpacing="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Header="Hour"
+                         Text="{Binding DurationHour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalAlignment="Stretch"
+                         PlaceholderText="Minute" />
+                <TextBox Header="Minute"
+                         Text="{Binding DurationMin,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalAlignment="Stretch"
+                         PlaceholderText="Minute"
+                         Grid.Column="1" />
+            </Grid>
+        </Grid>
         <Button Content="Save"
                 x:Name="SaveButton"
                 Click="SaveButton_Click"
                 HorizontalAlignment="Stretch"
-                Grid.Row="5" />
+                Grid.Row="6" />
     </Grid>
 </Page>

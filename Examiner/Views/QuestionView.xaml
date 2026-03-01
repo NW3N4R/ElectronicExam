@@ -6,10 +6,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       Loaded="Page_Loaded"
-      xmlns:equals="using:Examiner"
+      xmlns:conv="using:Examiner.Converters"
       mc:Ignorable="d">
     <Page.Resources>
-        <equals:EqualsConverter x:Key="EqualsConverter" />
+        <conv:EqualsConverter x:Key="EqualsConverter" />
     </Page.Resources>
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -17,15 +17,45 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="TitleBar"
-                    Spacing="20"
-                    Orientation="Horizontal">
-            <TextBlock Text="{Binding student.fullName}" />
-            <TextBlock Text="{Binding exam.SubjectName}" />
-            <TextBlock Text="{Binding exam.Title}" />
-            <TextBlock Text="{Binding exam.getDate}" />
-            <TextBlock Text="{Binding exam.ETime}" />
-        </StackPanel>
+        <Grid RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid x:Name="TitleBar">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="20">
+                    <TextBlock Text="{Binding student.fullName}" />
+                    <TextBlock Text="{Binding exam.SubjectName}" />
+                    <TextBlock Text="{Binding exam.Title}" />
+                    <TextBlock Text="{Binding exam.getDate}" />
+                    <TextBlock Text="{Binding exam.ETime}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal">
+                    <TextBlock Text="{Binding exam.Duration}" />
+                </StackPanel>
+            </Grid>
+            <Grid x:Name="TimerProgress"
+                  Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="ProgressLabe" />
+                </StackPanel>
+                <ProgressBar Grid.Row="1"
+                             HorizontalAlignment="Stretch"
+                             Minimum="0"
+                             Maximum="{Binding Duration}"
+                             Value="{Binding PassedMinutes}" />
+            </Grid>
+        </Grid>
         <Grid Grid.Row="1"
               Padding="10">
             <Grid.ColumnDefinitions>

@@ -28,7 +28,9 @@ namespace Examiner.Helpers
                         SubjectName = reader.GetString(2),
                         Title = reader.GetString(3),
                         EDate = new DateTimeOffset(reader.GetDateTime(4)),
-                        ETime = reader.GetTimeSpan(5)
+                        ETime = reader.GetTimeSpan(5),
+                        DurationHour = reader.GetInt32(6),
+                        DurationMin = reader.GetInt32(7),
                     });
                 }
             }
