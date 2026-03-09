@@ -46,7 +46,7 @@ namespace ElectronicExam.Administrator.Views
                     LastName = s.LastName,
                     MiddleName = s.MiddleName,
                     Code = s.Code,
-                    TotalMark = $"{(byte)studentScore} out of {totalMark}",
+                    TotalMark = $"{studentScore} out of {totalMark}",
                     Status = didStudentAttend ? (studentScore >= (totalMark / 2)) ? "Pass" : "Failed" : "did not attend"
                 };
             });

@@ -11,66 +11,95 @@
     <Page.Resources>
         <conv:EqualsConverter x:Key="EqualsConverter" />
     </Page.Resources>
-    <Grid Padding="20">
+    <Grid Padding="50,50,50,10"
+          RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid RowSpacing="10">
+        <Grid x:Name="TimerProgress"
+              Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <Grid x:Name="TitleBar">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal"
-                            Spacing="20">
-                    <TextBlock Text="{Binding student.fullName}" />
-                    <TextBlock Text="{Binding exam.SubjectName}" />
-                    <TextBlock Text="{Binding exam.Title}" />
-                    <TextBlock Text="{Binding exam.getDate}" />
-                    <TextBlock Text="{Binding exam.ETime}" />
-                </StackPanel>
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal">
-                    <TextBlock Text="{Binding exam.Duration}" />
-                </StackPanel>
-            </Grid>
-            <Grid x:Name="TimerProgress"
-                  Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="ProgressLabe" />
-                </StackPanel>
-                <ProgressBar Grid.Row="1"
-                             HorizontalAlignment="Stretch"
-                             Minimum="0"
-                             Maximum="{Binding Duration}"
-                             Value="{Binding PassedMinutes}" />
-            </Grid>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="ProgressLabe" />
+            </StackPanel>
+            <ProgressBar Grid.Row="1"
+                         HorizontalAlignment="Stretch"
+                         Minimum="0"
+                         Background="Transparent"
+                         Maximum="{Binding Duration}"
+                         Value="{Binding PassedMinutes}" />
         </Grid>
         <Grid Grid.Row="1"
-              Padding="10">
+              Padding="10"
+              RowSpacing="10"
+              Background="{ThemeResource CardBackgroundFillColorSecondary}"
+              CornerRadius="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        x:Name="TitleBar"
+                        Padding="12"
+                        CornerRadius="12"
+                        HorizontalAlignment="Center"
+                        Grid.ColumnSpan="4"
+                        Spacing="20">
+                <TextBlock Text="{Binding student.fullName}"
+                           Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <TextBlock Text="{Binding exam.SubjectName}"
+                           VerticalAlignment="Bottom" />
+                <TextBlock Text="{Binding exam.Title}"
+                           VerticalAlignment="Bottom" />
+                <TextBlock Text="{Binding exam.getDate}"
+                           VerticalAlignment="Bottom" />
+                <TextBlock Text="{Binding exam.ETime}"
+                           VerticalAlignment="Bottom" />
+                <TextBlock Text="{Binding exam.Duration}"
+                           VerticalAlignment="Bottom" />
+
+            </StackPanel>
+            <Button x:Name="SendAnsweers"
+                    DoubleTapped="SendAnsweers_DoubleTapped"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Background="{StaticResource SystemAccentColor}"
+                    Grid.Column="1"
+                    MinWidth="220">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="10">
+                    <SymbolIcon Symbol="Accept" />
+                    <TextBlock Text="Submit Questions" />
+                </StackPanel>
+            </Button>
             <StackPanel x:Name="CurrentQuestionContainer"
+                        Grid.ColumnSpan="2"
+                        Spacing="10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Spacing="20"
-                        MinWidth="320">
-                <TextBlock Text="{Binding Question}" />
-                <TextBlock Text="{Binding Explaining}" />
+                        Grid.Column="1"
+                        MinWidth="320"
+                        Grid.Row="1">
+                <TextBlock Text="{Binding Question}"
+                           Style="{ThemeResource TitleLargeTextBlockStyle}"
+                           TextAlignment="Center" />
+                <TextBlock Text="{Binding Explaining}"
+                           Style="{ThemeResource SubtitleTextBlockStyle}"
+                           TextAlignment="Center" />
                 <RadioButtons x:Name="AnswersRadio"
-                              Tag="{Binding id}">
+                              Tag="{Binding id}"
+                              HorizontalContentAlignment="Center"
+                              HorizontalAlignment="Center"
+                              MaxColumns="2">
                     <RadioButton Content="{Binding AnsA}"
                                  Tag="A"
                                  IsChecked="{Binding SelectedAnsweer, Mode=TwoWay, Converter={StaticResource EqualsConverter}, ConverterParameter=A}" />
@@ -85,19 +114,15 @@
                                  IsChecked="{Binding SelectedAnsweer, Mode=TwoWay, Converter={StaticResource EqualsConverter}, ConverterParameter=D}" />
                 </RadioButtons>
             </StackPanel>
-            <ListView Grid.Column="1"
+            <ListView Grid.Row="1"
+                      Grid.Column="0"
                       x:Name="QuestionsTileList"
-                      BorderThickness="2,0,0,0"
                       CornerRadius="10"
-                      Margin="10"
                       SelectedIndex="0"
+                      Padding="10"
                       SelectionChanged="QuestionsTileList_SelectionChanged"
-                      VerticalAlignment="Center"
-                      Background="{ThemeResource CardBackgroundFillColorSecondary}"
-                      MaxHeight="520">
-                <ListView.BorderBrush>
-                    <SolidColorBrush Color="{ThemeResource SystemAccentColor}" />
-                </ListView.BorderBrush>
+                      Background="{ThemeResource CardBackgroundFillColorSecondary}">
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <CheckBox IsEnabled="True"
@@ -113,8 +138,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        <Grid Grid.Row="2"
-              HorizontalAlignment="Stretch">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
@@ -147,17 +171,7 @@
                     </StackPanel>
                 </Button>
             </Grid>
-            <Button x:Name="SendAnsweers"
-                    DoubleTapped="SendAnsweers_DoubleTapped"
-                    Background="{StaticResource SystemAccentColor}"
-                    Grid.Column="1"
-                    MinWidth="220">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="10">
-                    <SymbolIcon Symbol="Accept" />
-                    <TextBlock Text="Submit Questions" />
-                </StackPanel>
-            </Button>
+
         </Grid>
     </Grid>
 </Page>

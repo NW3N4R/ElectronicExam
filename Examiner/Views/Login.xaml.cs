@@ -19,15 +19,15 @@ namespace Examiner.Views
         private async void SubmitBttn_Click(object sender, RoutedEventArgs e)
         {
             DetailsStack.Visibility = Visibility.Collapsed;
-            if (string.IsNullOrEmpty(StudentCode.Text))
+            if (string.IsNullOrEmpty(StudentCode.Text) || string.IsNullOrEmpty(StudentPhone.Text))
             {
-                MainWindow.Instance.ShowInfo("Provide Your Code", InfoBarSeverity.Error);
+                MainWindow.Instance.ShowInfo("Provide Your Details", InfoBarSeverity.Error);
                 return;
             }
-            var student = await StudentsHelper.GetStudents(StudentCode.Text);
+            var student = await StudentsHelper.GetStudents(StudentCode.Text, StudentPhone.Text);
             if (student is null)
             {
-                MainWindow.Instance.ShowInfo("Invalid Code", InfoBarSeverity.Error);
+                MainWindow.Instance.ShowInfo("Invalid Detail", InfoBarSeverity.Error);
                 return;
             }
             MainWindow.Instance.ShowInfo("Login Success", InfoBarSeverity.Success);
@@ -35,7 +35,7 @@ namespace Examiner.Views
             var examIds = await JoinedStudentsHelper.GetJoinedStudents(student.id);
             if (examIds is null)
             {
-                MainWindow.Instance.ShowInfo("No Exam Assigned to this code", InfoBarSeverity.Error);
+                MainWindow.Instance.ShowInfo("No Exam Assigned to this Student", InfoBarSeverity.Error);
                 return;
             }
             await ExamPrimaryHelper.GetExamsPrimary();
@@ -54,11 +54,12 @@ namespace Examiner.Views
                 MainWindow.Instance.currentSession.ExamHeader = ExamPrimaryHelper.exams.First(x => x.id == selectedId);
             }
         }
+    
         private async void LoginBttn_Click(object sender, RoutedEventArgs e)
         {
 
             await JoinedStudentsHelper.joinStudent(MainWindow.Instance.currentSession.LoggedStudent!.id, MainWindow.Instance.currentSession.ExamHeader!.id);
-            MainWindow.Instance.StartExam();
+           MainWindow.Instance.currentSession.StartExam();
         }
     }
 }

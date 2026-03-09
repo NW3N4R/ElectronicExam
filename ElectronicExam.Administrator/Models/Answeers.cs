@@ -10,6 +10,6 @@
 
         public string SelectedAnsweer { get; set; } = "";
 
-        public byte Mark { get; set; }
+        public int Mark { get; set; }
     }
 }

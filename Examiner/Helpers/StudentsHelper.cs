@@ -7,10 +7,11 @@ namespace Examiner.Helpers
 {
     public static class StudentsHelper
     {
-        public static async Task<Students?> GetStudents(string code)
+        public static async Task<Students?> GetStudents(string code,string phone)
         {
-            using var cmd = new SqlCommand("select * from students where code = @code", ConnectionHelper.connection);
+            using var cmd = new SqlCommand("select * from students where code = @code and phone = @phone", ConnectionHelper.connection);
             cmd.Parameters.AddWithValue("@code", code);
+            cmd.Parameters.AddWithValue("@phone", phone);
             using var reader = await cmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {

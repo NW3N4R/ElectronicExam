@@ -1,10 +1,11 @@
 using Examiner.Helpers;
 using Examiner.Models;
-
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Controls;
 
 using System;
 using System.Linq;
+using Windows.System;
 namespace Examiner.Views
 {
     public sealed partial class QuestionView : Page
@@ -16,17 +17,44 @@ namespace Examiner.Views
             InitializeComponent();
             TitleBar.DataContext = new titleBarModel();
             session.ExamQuestions!.CollectionChanged += ExamQuestions_CollectionChanged;
-            _timer.Interval = TimeSpan.FromMinutes(1).TotalMilliseconds;
+            _timer.Interval = TimeSpan.FromMinutes(0.1).TotalMilliseconds;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
-
+            this.KeyDown += QuestionView_KeyDown;
         }
+
+        private async void QuestionView_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+
+            var ctrl = InputKeyboardSource.GetKeyStateForCurrentThread(VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
+
+            if (ctrl &&
+                (e.Key == VirtualKey.C ||
+                 e.Key == VirtualKey.V ||
+                 e.Key == VirtualKey.X))
+            {
+
+                var dialog = new ContentDialog
+                {
+                    Title = "Copy Paste is not Allowed",
+                    Content = "the examiner doesnt accept Copy Paste, your results will be marked as failure",
+                    PrimaryButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                dialog.PrimaryButtonClick += (s, e) => MainWindow.Instance.currentSession.StopExam(true);
+                await dialog.ShowAsync();
+                e.Handled = true;
+
+            }
+        }
+
         private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             QuestionsTileList.ItemsSource = session.ExamQuestions;
             session.Duration = ((double)session.ExamHeader!.DurationHour * 60) + session.ExamHeader.DurationMin;
             TimerProgress.DataContext = session;
         }
+     
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             DispatcherQueue.TryEnqueue(async () =>
@@ -58,26 +86,9 @@ namespace Examiner.Views
 
         }
 
-        private void Dialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
-        {
-            args.Cancel = true;
-        }
-
         private async void Dialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            foreach (var q in session.ExamQuestions!)
-            {
-                var answerModel = new Answeers
-                {
-                    StudentId = session.LoggedStudent!.id,
-                    QuestionId = q.id,
-                    SelectedAnsweer = q.SelectedAnsweer,
-                    ExamId = session.ExamHeader!.id,
-                    Mark = (byte)(q.SelectedAnsweer == q.CorrectAnsweer ? q.Mark : 0)
-                };
-                await AnsweersHelper.InsertAnsweer(answerModel);
-            }
-            Microsoft.UI.Xaml.Application.Current.Exit();
+            MainWindow.Instance.currentSession.StopExam();
         }
 
         private void ExamQuestions_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -111,7 +122,14 @@ namespace Examiner.Views
         {
             if (session.ExamQuestions!.Any(x => !x.isAnsweered))
             {
-                MainWindow.Instance.ShowInfo("You have at least one \nremaining question to answer", InfoBarSeverity.Warning);
+                ContentDialog answersRemainDialog = new ContentDialog()
+                {
+                    Title = "some answeers remain",
+                    Content = "please answeer all the questions",
+                    SecondaryButtonText = "Ok",
+                    XamlRoot = this.XamlRoot,
+                };
+                await answersRemainDialog.ShowAsync();
                 return;
             }
             ContentDialog dialog = new ContentDialog()
@@ -132,14 +150,13 @@ namespace Examiner.Views
                         QuestionId = q.id,
                         SelectedAnsweer = q.SelectedAnsweer,
                         ExamId = session.ExamHeader!.id,
-                        Mark = (byte)(q.SelectedAnsweer == q.CorrectAnsweer ? q.Mark : 0)
+                        Mark = q.SelectedAnsweer == q.CorrectAnsweer ? q.Mark : 0
                     };
                     await AnsweersHelper.InsertAnsweer(answerModel);
                 }
                 Microsoft.UI.Xaml.Application.Current.Exit();
             };
             await dialog.ShowAsync();
-
         }
     }
     class titleBarModel

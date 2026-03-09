@@ -1,12 +1,17 @@
 using Examiner.Helpers;
 using Examiner.Views;
-
+using Microsoft.UI.Input;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-
+using Microsoft.UI.Xaml.Input;
+using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.System;
+using WinRT.Interop;
 
 namespace Examiner
 {
@@ -14,12 +19,42 @@ namespace Examiner
     {
         public static MainWindow Instance;
         public CurrentSession currentSession;
+        public static bool allowClose = false;
         public MainWindow()
         {
             InitializeComponent();
             this.ExtendsContentIntoTitleBar = true;
+            //if (AppWindow.TitleBar.ExtendsContentIntoTitleBar)
+            //{
+            //    AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
+            //}
             Instance = this;
             currentSession = new();
+
+            var hwnd = WindowNative.GetWindowHandle(this);
+            var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+
+            //appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
+            appWindow.Closing += AppWindow_Closing;
+
+        }
+    
+        private async void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+        {
+            if (!allowClose)
+            {
+                args.Cancel = true;
+
+                var dialog = new ContentDialog
+                {
+                    Title = "Closing App is Not Allowed",
+                    Content = "closing the examiner app by your own marks your result to failure",
+                    PrimaryButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+            }
         }
 
         private async void mainWindowFrame_Loaded(object sender, RoutedEventArgs e)
@@ -27,6 +62,7 @@ namespace Examiner
             mainWindowFrame.Content = new Login();
             await ConnectionHelper.OpenConnectionAsync();
         }
+
         public async void ShowInfo(string message, InfoBarSeverity sev)
         {
             mainInfo.IsOpen = false;
@@ -42,22 +78,6 @@ namespace Examiner
         {
             await Task.Delay(2000);
             mainInfo.IsOpen = false;
-        }
-
-        public async void StartExam()
-        {
-            if (currentSession.ExamHeader is null || currentSession.LoggedStudent is null)
-            {
-                ShowInfo("an unhandled exaception occured", InfoBarSeverity.Error);
-                return;
-            }
-            await ExamQuestionsHelper.GetExamQuestions();
-            currentSession.ExamQuestions =
-                new ObservableCollection<Models.ExamQuestions>(
-                    ExamQuestionsHelper.questions
-                        .Where(x => x.ExamId == currentSession.ExamHeader.id)
-                );
-            mainWindowFrame.Content = new QuestionView();
         }
     }
 }

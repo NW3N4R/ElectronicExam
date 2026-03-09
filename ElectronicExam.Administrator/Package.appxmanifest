@@ -9,7 +9,7 @@
 
   <Identity
     Name="b09ae07e-7ab1-4c54-8d6f-585bffab8667"
-    Publisher="CN=Younis"
+    Publisher="CN=younis"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="b09ae07e-7ab1-4c54-8d6f-585bffab8667" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>

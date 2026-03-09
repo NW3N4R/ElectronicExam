@@ -28,11 +28,18 @@
             <TextBlock Text="Please Write Your Login Details"
                        HorizontalAlignment="Center"
                        Style="{ThemeResource BodyStrongTextBlockStyle}" />
-            <TextBox Header="StudentCode"
-                     PlaceholderText="your 10 char code"
-                     x:Name="StudentCode"
-                     Text="13FEEA"
+
+            <TextBox Header="Student's Phone Number"
+                     PlaceholderText="phone number"
+                     x:Name="StudentPhone"
+                     Text="07701555555"
                      HorizontalAlignment="Stretch" />
+
+            <TextBox Header="Student's private Code"
+              PlaceholderText="your 10 char code"
+              x:Name="StudentCode"
+              Text="13FEEA"
+              HorizontalAlignment="Stretch" />
             <Button Background="{StaticResource SystemAccentColor}"
                     Content="Submit"
                     x:Name="SubmitBttn"
@@ -83,6 +90,7 @@
                       SelectedValuePath="id"
                       DisplayMemberPath="Title"
                       HorizontalAlignment="Stretch"
+                      MinWidth="320"
                       SelectionChanged="ExamSelector_SelectionChanged"/>
             <Button x:Name="LoginBttn"
                     Click="LoginBttn_Click"
