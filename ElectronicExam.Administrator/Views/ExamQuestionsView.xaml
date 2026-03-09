@@ -77,7 +77,7 @@
                 <ResourceDictionary>
                     <Style TargetType="StackPanel">
                         <Setter Property="MinWidth"
-                                Value="220" />
+                                Value="350" />
                         <Setter Property="HorizontalAlignment"
                                 Value="Stretch" />
                         <Setter Property="Padding"
@@ -104,7 +104,7 @@
                     <TextBlock Text="{Binding ExamHeader.SubjectName}"
                                Style="{ThemeResource SubtitleTextBlockStyle}" />
                 </StackPanel>
-                <StackPanel>
+                <StackPanel >
                     <TextBlock Text="Exam Title"
                                Style="{ThemeResource CaptionTextBlockStyle}" />
                     <TextBlock Text="{Binding ExamHeader.Title}"
