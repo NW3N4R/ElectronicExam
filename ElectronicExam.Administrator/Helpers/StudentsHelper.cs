@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 namespace ElectronicExam.Administrator.Helpers
@@ -97,11 +98,18 @@ namespace ElectronicExam.Administrator.Helpers
         }
         public static async Task DeleteStudent(int id)
         {
-            using var cmd = new SqlCommand("DELETE FROM students WHERE id = @id", ConnectionHelper.connection);
-            cmd.Parameters.AddWithValue("@id", id);
-            await cmd.ExecuteNonQueryAsync();
-            await GetStudents();
-            new ToastContentBuilder().AddText("Success").AddText("Student Deleted").Show();
+            try
+            {
+                using var cmd = new SqlCommand("DELETE FROM students WHERE id = @id", ConnectionHelper.connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                await cmd.ExecuteNonQueryAsync();
+                await GetStudents();
+                new ToastContentBuilder().AddText("Success").AddText("Student Deleted").Show();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
         public static bool ValidatStudent(Students student)
         {

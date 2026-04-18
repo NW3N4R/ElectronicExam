@@ -23,28 +23,37 @@ namespace ElectronicExam.Administrator.Views
 
         private async void DeleteStudent_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            var item = sender as Button;
-            if (item?.Tag is not Int32 tag)
-                return;
-            var dialog = new ContentDialog()
+            try
             {
-                Title = "Are You Sure Deleting This Student?",
-                Content = "You Can't Undo This Action",
-                XamlRoot = this.XamlRoot,
-                PrimaryButtonText = "Yes, Delete",
-                SecondaryButtonText = "No, Cancel"
+                var item = sender as Button;
+                if (item?.Tag is not Int32 tag)
+                    return;
+                var dialog = new ContentDialog()
+                {
+                    Title = "Are You Sure Deleting This Student?",
+                    Content = "You Can't Undo This Action",
+                    PrimaryButtonText = "Yes, Delete",
+                    SecondaryButtonText = "No, Cancel",
+                    XamlRoot = this.XamlRoot,
+                    
 
-            };
-            dialog.PrimaryButtonClick +=
-                async (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+                };
+                dialog.PrimaryButtonClick +=
+                    async (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+                {
+                    await StudentsHelper.DeleteStudent(tag);
+                    myListView.ItemsSource = null;
+                    myListView.ItemsSource = StudentsHelper.students;
+                };
+
+                await dialog.ShowAsync();
+
+            }
+            catch (Exception ex)
             {
-                await StudentsHelper.DeleteStudent(tag);
-                myListView.ItemsSource = null;
-                myListView.ItemsSource = StudentsHelper.students;
-            };
+                Debug.WriteLine(ex.Message);
 
-            await dialog.ShowAsync();
-
+            }
         }
 
         private void UpdateStudent_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
