@@ -17,7 +17,11 @@ namespace Examiner.Views
             InitializeComponent();
             TitleBar.DataContext = new titleBarModel();
             session.ExamQuestions!.CollectionChanged += ExamQuestions_CollectionChanged;
-            _timer.Interval = TimeSpan.FromMinutes(0.1).TotalMilliseconds;
+
+            // NOTE this section is fast forwarding the exam duration to simulate real time
+            // 1 min =  60,000 ms
+            // 0.01m * 60,000 ms = 600ms
+            _timer.Interval = TimeSpan.FromMinutes(0.01).TotalMilliseconds;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
             this.KeyDown += QuestionView_KeyDown;
@@ -51,10 +55,10 @@ namespace Examiner.Views
         private void Page_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             QuestionsTileList.ItemsSource = session.ExamQuestions;
-            session.Duration = ((double)session.ExamHeader!.DurationHour * 60) + session.ExamHeader.DurationMin;
+            session.Duration = ((double)session!.ExamHeader!.ExamDuration * 60);
             TimerProgress.DataContext = session;
         }
-     
+
         private void _timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             DispatcherQueue.TryEnqueue(async () =>

@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,10 +32,8 @@ namespace ElectronicExam.Administrator.Helpers
                         TeacherName = reader.GetString(1),
                         SubjectName = reader.GetString(2),
                         Title = reader.GetString(3),
-                        EDate = new DateTimeOffset(reader.GetDateTime(4)),
-                        ETime = reader.GetTimeSpan(5),
-                        DurationHour = reader.GetInt32(6),
-                        DurationMin = reader.GetInt32(7),
+                        ExamDateTime = new DateTimeOffset(reader.GetDateTime(4)),
+                        ExamDuration = reader.GetDecimal(5),
                     });
                 }
             }
@@ -45,19 +44,16 @@ namespace ElectronicExam.Administrator.Helpers
 
             if (!ValidateExam(exam)) return false;
 
-            const string sql = @" INSERT INTO ExamsPrimary (TeacherName, SubjectName, Title,EDate,ETime,durationHours,DurationMin)
-                                    VALUES (@teacher, @subject, @title,@EDate,@ETime,@dh,@dm)";
-
+            const string sql = @" INSERT INTO ExamsPrimary VALUES (@teacher, @subject, @title, @EDate, @dh)";
+         
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
             cmd.Parameters.AddWithValue("@teacher", exam.TeacherName ?? string.Empty);
             cmd.Parameters.AddWithValue("@subject", exam.SubjectName ?? string.Empty);
             cmd.Parameters.AddWithValue("@title", exam.Title ?? string.Empty);
-            cmd.Parameters.AddWithValue("@EDate", exam.EDate);
-            cmd.Parameters.AddWithValue("@ETime", exam.ETime);
-            cmd.Parameters.AddWithValue("@dh", exam.DurationHour);
-            cmd.Parameters.AddWithValue("@dm", exam.DurationMin);
+            cmd.Parameters.AddWithValue("@EDate", exam.ExamDateTime.ToString("yyyy-MM-dd HH:mm"));
+            cmd.Parameters.AddWithValue("@dh", exam.ExamDuration);
 
-            await cmd.ExecuteNonQueryAsync();
+             cmd.ExecuteNonQuery();
             await GetExamsPrimary();
             new ToastContentBuilder().AddText("Success").AddText("Exam Created").Show();
             return true;
@@ -69,16 +65,14 @@ namespace ElectronicExam.Administrator.Helpers
 
             const string sql = @" UPDATE ExamsPrimary SET 
                                     TeacherName = @teacher, SubjectName = @subject,
-                                    Title = @title,EDate = @EDate,ETime = @ETime, durationHours = @dh,durationMin = @dm  WHERE id = @id";
+                                    Title = @title,ExamDateTime = @EDate, ExamDuration = @dh  WHERE id = @id";
 
             using var cmd = new SqlCommand(sql, ConnectionHelper.connection);
             cmd.Parameters.AddWithValue("@teacher", exam.TeacherName ?? string.Empty);
             cmd.Parameters.AddWithValue("@subject", exam.SubjectName ?? string.Empty);
             cmd.Parameters.AddWithValue("@title", exam.Title ?? string.Empty);
-            cmd.Parameters.AddWithValue("@EDate", exam.EDate);
-            cmd.Parameters.AddWithValue("@ETime", exam.ETime);
-            cmd.Parameters.AddWithValue("@dh", exam.DurationHour);
-            cmd.Parameters.AddWithValue("@dm", exam.DurationMin);
+            cmd.Parameters.AddWithValue("@EDate", exam.ExamDateTime);
+            cmd.Parameters.AddWithValue("@dh", exam.ExamDuration);
             cmd.Parameters.AddWithValue("@id", exam.id);
 
             await cmd.ExecuteNonQueryAsync();
@@ -110,17 +104,17 @@ namespace ElectronicExam.Administrator.Helpers
             TimeSpan startLimit = new TimeSpan(7, 40, 0);  // 7:40 AM
             TimeSpan endLimit = new TimeSpan(20, 0, 0);
 
-            if (exam.TeacherName.IsNullOrEmpty() || !exam.TeacherName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+            if (string.IsNullOrEmpty(exam.TeacherName) || !exam.TeacherName.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
                 error = "Teacher Name most not be empty\nor contain any non-letter chars";
-            else if (exam.SubjectName.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(exam.SubjectName))
                 error = "Subject Name most not be empty";
-            else if (exam.Title.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(exam.Title) )
                 error = "Title most not be empty";
-            else if (exam.EDate <= DateTime.Now)
+            else if (exam.ExamDateTime <= DateTime.Now)
                 error = "Date Most not be empty or before today";
-            else if (exam.ETime == default ||
-                    (exam.ETime < startLimit || exam.ETime > endLimit))
-                error = "Exam Time Most be between 7:40 AM and 08:00 PM";
+            //else if (exam.ETime == default ||
+            //        (exam.ETime < startLimit || exam.ETime > endLimit))
+            //    error = "Exam Time Most be between 7:40 AM and 08:00 PM";
 
             if (error != null)
             {

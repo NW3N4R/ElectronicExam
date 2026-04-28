@@ -145,19 +145,19 @@ namespace ElectronicExam.Administrator.Helpers
         {
             var instance = MainWindow.instance;
             string? error = null;
-            if (question.Question.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(question.Question))
                 error = "Question most not be empty";
 
-            else if (question.Explaining.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(question.Explaining))
                 error = "Explaining most not be empty";
 
-            else if (question.AnsA.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(question.AnsA))
                 error = "Answeer A most not be empty";
-            else if (question.AnsB.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(question.AnsB))
                 error = "Answeer B most not be empty";
-            else if (question.AnsC.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(question.AnsC))
                 error = "Answeer C most not be empty";
-            else if (question.AnsD.IsNullOrEmpty())
+            else if (string.IsNullOrEmpty(question.AnsD))
                 error = "Answeer D most not be empty";
             else if (question.Mark == 0)
                 error = "Question mark is required";

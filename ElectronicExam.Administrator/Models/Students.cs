@@ -49,11 +49,11 @@ namespace ElectronicExam.Administrator.Models
             get => field;
             set => SetProperty(ref field, value);
         } = 1;
-        public string Gender
+        public char Gender
         {
             get => field;
             set => SetProperty(ref field, value);
-        } = "Male";
+        } = 'M';
 
         public List<string> LetterGroups = new List<string>() { "A", "B", "C" };
         public List<string> DepGroups = new List<string>() { "Programming", "Web Design", "Networking" };

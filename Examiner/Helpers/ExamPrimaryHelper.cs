@@ -27,10 +27,8 @@ namespace Examiner.Helpers
                         TeacherName = reader.GetString(1),
                         SubjectName = reader.GetString(2),
                         Title = reader.GetString(3),
-                        EDate = new DateTimeOffset(reader.GetDateTime(4)),
-                        ETime = reader.GetTimeSpan(5),
-                        DurationHour = reader.GetInt32(6),
-                        DurationMin = reader.GetInt32(7),
+                        ExamDateTime = new DateTimeOffset(reader.GetDateTime(4)),
+                        ExamDuration = reader.GetDecimal(5),
                     });
                 }
             }

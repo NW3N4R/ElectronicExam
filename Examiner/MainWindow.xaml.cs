@@ -24,10 +24,10 @@ namespace Examiner
         {
             InitializeComponent();
             this.ExtendsContentIntoTitleBar = true;
-            //if (AppWindow.TitleBar.ExtendsContentIntoTitleBar)
-            //{
-            //    AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
-            //}
+            if (AppWindow.TitleBar.ExtendsContentIntoTitleBar)
+            {
+                AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
+            }
             Instance = this;
             currentSession = new();
 
@@ -35,28 +35,34 @@ namespace Examiner
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
             var appWindow = AppWindow.GetFromWindowId(windowId);
 
-            //appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
+            appWindow.SetPresenter(AppWindowPresenterKind.FullScreen);
             appWindow.Closing += AppWindow_Closing;
 
         }
     
         private async void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
         {
-            if (!allowClose)
+            try
             {
-                args.Cancel = true;
-
-                var dialog = new ContentDialog
+                if (!allowClose)
                 {
-                    Title = "Closing App is Not Allowed",
-                    Content = "closing the examiner app by your own marks your result to failure",
-                    PrimaryButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
+                    args.Cancel = true;
+
+                    var dialog = new ContentDialog
+                    {
+                        Title = "Closing App is Not Allowed",
+                        Content = "closing the examiner app by your own marks your result to failure",
+                        PrimaryButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
-
         private async void mainWindowFrame_Loaded(object sender, RoutedEventArgs e)
         {
             mainWindowFrame.Content = new Login();

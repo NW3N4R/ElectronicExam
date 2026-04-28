@@ -38,7 +38,7 @@ namespace ElectronicExam.Administrator.Views
 
         private void FilterByDate_SelectedDateChanged(DatePicker sender, DatePickerSelectedValueChangedEventArgs args)
         {
-            mylist.ItemsSource = ExamPrimaryHelper.exams.Where(x => x.EDate == FilterByDate.SelectedDate?.Date || FilterByDate.SelectedDate == null);
+            mylist.ItemsSource = ExamPrimaryHelper.exams.Where(x => x.ExamDateTime == FilterByDate.SelectedDate?.Date || FilterByDate.SelectedDate == null);
         }
 
         private void CleanFilters_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)

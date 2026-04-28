@@ -32,13 +32,13 @@
             <TextBox Header="Student's Phone Number"
                      PlaceholderText="phone number"
                      x:Name="StudentPhone"
-                     Text="07701555555"
+                     Text="07701234560"
                      HorizontalAlignment="Stretch" />
 
             <TextBox Header="Student's private Code"
               PlaceholderText="your 10 char code"
               x:Name="StudentCode"
-              Text="13FEEA"
+              Text="8B89E756"
               HorizontalAlignment="Stretch" />
             <Button Background="{StaticResource SystemAccentColor}"
                     Content="Submit"

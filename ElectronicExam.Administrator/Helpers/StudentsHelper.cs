@@ -32,7 +32,7 @@ namespace ElectronicExam.Administrator.Helpers
                         LastName = reader.GetString(3),
                         Phone = reader.GetString(4),
                         Email = reader.GetString(5),
-                        Gender = reader.GetString(6),
+                        Gender = reader.GetString(6)[0],
                         Stage = reader.GetByte(7),
                         Group = reader.GetString(8),
                         Code = reader.GetString(9),
@@ -115,19 +115,19 @@ namespace ElectronicExam.Administrator.Helpers
         {
             var main = MainWindow.instance;
             string? error = null;
-            if (student.FirstName.IsNullOrEmpty() || !student.FirstName.All(char.IsLetter))
+            if (string.IsNullOrEmpty(student.FirstName) || !student.FirstName.All(char.IsLetter))
                 error = "First name most not be empty or\ncontain any non-letter chars";
 
-            else if (student.MiddleName.IsNullOrEmpty() || !student.MiddleName.All(char.IsLetter))
+            else if (string.IsNullOrEmpty(student.MiddleName) || !student.MiddleName.All(char.IsLetter))
                 error = "Second name most not be empty or\ncontain any non-letter chars";
 
-            else if (student.LastName.IsNullOrEmpty() || !student.LastName.All(char.IsLetter))
+            else if (string.IsNullOrEmpty(student.LastName) || !student.LastName.All(char.IsLetter))
                 error = "Last name most not be empty or\ncontain any non-letter chars";
 
-            else if (student.Phone.IsNullOrEmpty() || student.Phone.Length < 11)
+            else if (string.IsNullOrEmpty(student.Phone) || student.Phone.Length < 11)
                 error = "Invalid Phone Number";
 
-            else if (!student.Email.IsNullOrEmpty() && (!student.Email.Contains("@")))
+            else if (!string.IsNullOrEmpty(student.Email) && (!student.Email.Contains("@")))
                 error = "Email Most be Empty or Real";
             if (error != null)
             {

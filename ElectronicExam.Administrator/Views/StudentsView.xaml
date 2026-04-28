@@ -7,7 +7,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:newStudent="using:ElectronicExam.Administrator.Uploaders"
       xmlns:helper="using:ElectronicExam.Administrator.Helpers"
+      xmlns:converters="using:ElectronicExam.Administrator.valueConverters"
       mc:Ignorable="d">
+    <Page.Resources>
+        <converters:GenderConverter x:Key="toChar"/>
+    </Page.Resources>
     <Grid RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -110,9 +114,10 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center" />
                         <TextBlock Grid.Column="4"
-                                   Text="{Binding Gender}"
+                                   Text="{Binding Gender,Converter={StaticResource toChar}}"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center" />
+                                   HorizontalAlignment="Center" 
+                                   />
                         <TextBlock Grid.Column="5"
                                    Text="{Binding Stage}"
                                    VerticalAlignment="Center"

@@ -6,7 +6,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:NewExam="using:ElectronicExam.Administrator.Uploaders"
-      mc:Ignorable="d">
+      mc:Ignorable="d"
+      xmlns:converters="using:ElectronicExam.Administrator.valueConverters">
+    <Page.Resources>
+        <converters:DateTimeToStringConverter x:Key="dateToString"/>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -64,7 +68,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto"
                                           MinWidth="80" />
                     </Grid.ColumnDefinitions>
@@ -75,17 +78,14 @@
                                Grid.Column="2" />
                     <TextBlock Text="Date"
                                Grid.Column="3" />
-                    <TextBlock Text="Time"
-                               Grid.Column="4" />
                     <TextBlock Text="Duration"
-                               Grid.Column="5" />
+                               Grid.Column="4" />
                 </Grid>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid ColumnSpacing="10">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -99,13 +99,11 @@
                                    Grid.Column="1" />
                         <TextBlock Text="{Binding Title}"
                                    Grid.Column="2" />
-                        <TextBlock Text="{Binding getDate}"
+                        <TextBlock Text="{Binding ExamDateTime,Converter={StaticResource dateToString}}"
                                    Grid.Column="3" />
-                        <TextBlock Text="{Binding ETime}"
+                        <TextBlock Text="{Binding ExamDuration}"
                                    Grid.Column="4" />
-                        <TextBlock Text="{Binding Duration}"
-                                   Grid.Column="5" />
-                        <Button Grid.Column="6"
+                        <Button Grid.Column="5"
                                 Background="Transparent"
                                 BorderBrush="Transparent">
                             <SymbolIcon Symbol="More" />

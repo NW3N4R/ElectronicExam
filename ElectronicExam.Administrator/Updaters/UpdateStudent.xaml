@@ -9,6 +9,7 @@
       mc:Ignorable="d">
     <Page.Resources>
         <conv:StringToByteConverter x:Key="toByte" />
+        <conv:GenderConverter x:Key="toChar" />
     </Page.Resources>
     <Grid RowSpacing="10"
           ColumnSpacing="10">
@@ -47,7 +48,7 @@
                  Text="{Binding Email,Mode=TwoWay}"
                  Grid.Row="2" />
         <ComboBox Header="Gender"
-                  SelectedItem="{Binding Gender,Mode=TwoWay}"
+                  SelectedItem="{Binding Gender,Mode=TwoWay,Converter={StaticResource toChar}}"
                   HorizontalAlignment="Stretch"
                   Grid.Column="1"
                   Grid.Row="2">

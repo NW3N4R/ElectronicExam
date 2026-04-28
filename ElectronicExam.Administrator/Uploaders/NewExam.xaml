@@ -34,40 +34,16 @@
         <DatePicker Grid.Row="3"
                     Header="Date"
                     x:Name="DateSelector"
-                    MonthFormat="{}{month.integer(2)}"
-                    SelectedDate="{Binding EDate,Mode=TwoWay}" />
+                    MonthFormat="{}{month.integer(2)}"/>
         <TimePicker Grid.Row="4"
                     Header="Time"
                     HorizontalAlignment="Stretch"
-                    x:Name="TimeSelector"
-                    SelectedTime="{Binding ETime,Mode=TwoWay}" />
-        <Grid   Grid.Row="5"
-                Padding="10"
-                CornerRadius="10"
-                Background="{StaticResource CardBackgroundFillColorDefault}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock Text="Exam Duration" />
-            <Grid Grid.Row="1"
-                  HorizontalAlignment="Stretch"
-                  ColumnSpacing="20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBox Header="Hour"
-                         Text="{Binding DurationHour,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalAlignment="Stretch"
-                         PlaceholderText="Minute" />
-                <TextBox Header="Minute"
-                         Text="{Binding DurationMin,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                         HorizontalAlignment="Stretch"
-                         PlaceholderText="Minute"
-                         Grid.Column="1" />
-            </Grid>
-        </Grid>
+                    x:Name="TimeSelector"/>
+        <TextBox Header="Exam Duration"
+                 Grid.Row="5"
+                 Text="{Binding ExamDuration,Mode=TwoWay,Converter={StaticResource toDecimal}}"
+                 HorizontalAlignment="Stretch"
+                 PlaceholderText="Minute" />
         <Button Content="Save"
                 x:Name="SaveButton"
                 Click="SaveButton_Click"

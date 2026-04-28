@@ -68,8 +68,6 @@ namespace ElectronicExam.Administrator.Views
             Analysis.FailedStudents = FailedStudents.Count();
             Analysis.PassedStudents = PassedStudents.Count();
 
-            Debug.WriteLine(Analysis.PassedStudents);
-            Debug.WriteLine(students.Count);
             Analysis.RateOfSuccess = (((double)Analysis.PassedStudents / (double)students.Count) * 100).ToString("F2") + "%";
             Analysis.RateOfFail = (((double)Analysis.FailedStudents / (double)students.Count) * 100).ToString("F2") + "%";
         }

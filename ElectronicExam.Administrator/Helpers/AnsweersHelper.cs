@@ -27,7 +27,7 @@ namespace ElectronicExam.Administrator.Helpers
                         StudentId = reader.GetInt32(1),
                         QuestionId = reader.GetInt32(2),
                         SelectedAnsweer = reader.GetString(3),
-                        Mark = reader.GetInt32(4),
+                        Mark = reader.GetByte(4),
                     });
                 }
             }

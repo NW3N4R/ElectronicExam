@@ -25,31 +25,18 @@ namespace Examiner.Models
             set => SetProperty(ref field, value);
         }
 
-        public DateTimeOffset EDate
+        public DateTimeOffset ExamDateTime
         {
             get => field;
             set => SetProperty(ref field, value);
         } = DateTimeOffset.Now.AddDays(1);
 
-        public string getDate => EDate.Date.ToString("yyyy-MM-dd");
+        public string getDate => ExamDateTime.Date.ToString("yyyy-MM-dd");
 
-        public TimeSpan ETime
-        {
-            get => field;
-            set => SetProperty(ref field, value);
-        } = new TimeSpan(7, 40, 0);
-
-        public int DurationHour
+        public decimal ExamDuration
         {
             get => field;
             set => SetProperty(ref field, value);
         }
-        public int DurationMin
-        {
-            get => field;
-            set => SetProperty(ref field, value);
-        }
-
-        public string Duration => $"{DurationHour.ToString().PadLeft(2, '0')}:{DurationMin.ToString().PadLeft(2, '0')}";
     }
 }

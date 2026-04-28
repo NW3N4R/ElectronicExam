@@ -17,8 +17,8 @@ namespace ElectronicExam.Administrator
         async void load()
         {
             await ConnectionHelper.OpenConnectionAsync();
-            await StudentsHelper.GetStudents();
-            await ExamPrimaryHelper.GetExamsPrimary();
+            //await StudentsHelper.GetStudents();
+            //await ExamPrimaryHelper.GetExamsPrimary();
         }
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {

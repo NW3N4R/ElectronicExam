@@ -35,7 +35,7 @@ namespace ElectronicExam.Administrator.Views
                     PrimaryButtonText = "Yes, Delete",
                     SecondaryButtonText = "No, Cancel",
                     XamlRoot = this.XamlRoot,
-                    
+
 
                 };
                 dialog.PrimaryButtonClick +=
@@ -58,20 +58,27 @@ namespace ElectronicExam.Administrator.Views
 
         private void UpdateStudent_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            var item = sender as Button;
-            if (item?.Tag is not Int32 tag)
+            try
             {
-                Debug.WriteLine("Tag was Not Int32");
-                if (item != null)
+                var item = sender as Button;
+                if (item?.Tag is not Int32 tag)
                 {
-                    Debug.WriteLine(item.Tag.GetType());
+                    Debug.WriteLine("Tag was Not Int32");
+                    if (item != null)
+                    {
+                        Debug.WriteLine(item.Tag.GetType());
+                    }
+                    return;
                 }
-                return;
+                var flyout = new Flyout();
+                flyout.Placement = FlyoutPlacementMode.RightEdgeAlignedTop;
+                flyout.Content = new UpdateStudent(StudentsHelper.students.First(x => x.id == tag));
+                flyout.ShowAt(item);
             }
-            var flyout = new Flyout();
-            flyout.Placement = FlyoutPlacementMode.RightEdgeAlignedTop;
-            flyout.Content = new UpdateStudent(StudentsHelper.students.First(x => x.id == tag));
-            flyout.ShowAt(item);
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"exception {ex.Message}");
+            }
         }
 
         private void SearchTXT_TextChanged(TextBox sender, TextBoxTextChangingEventArgs args)
