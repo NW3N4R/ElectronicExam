@@ -14,3 +14,10 @@ A C# desktop application that digitizes the exam process — giving administrato
 ---
 
 # Project Structure
+ElectronicExam/
+
+├── ElectronicExam.Administrator/   # Admin module (exam & user management)
+
+├── Examiner/                       # Examiner module (exam interface)
+
+└── ElectronicExam.slnx             # Solution file
